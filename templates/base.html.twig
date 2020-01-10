@@ -2,11 +2,98 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Eorzea Compendium - {% block title %}Bienvenue !{% endblock %}</title>
+        <link rel="icon" type="image/png" href="{{asset('build/images/logo_header.png')}}" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
+        {{ encore_entry_link_tags('app') }}
+        <style>
+            body{
+                background: url("{{asset('build/images/background.png')}}") center no-repeat;
+            }
+            @media (max-width: 370px){
+                header #search-header{background : #414042 url("{{asset('build/images/logo_search.png')}}") no-repeat center 50%;}
+            }
+        </style>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header class="row navbar navbar-expand">
+            <ul class="offset-lg-1 col-lg-3 navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="{{asset('build/images/logo_discord.png')}}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="{{asset('build/images/logo_youtube.png')}}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="{{asset('build/images/logo_facebook.png')}}"></a>
+                </li>
+            </ul>
+            <div class="col-lg-4 logo-header">
+                <img class="d-none d-sm-block" src="{{asset('build/images/logo_header.png')}}">
+            </div>
+            <div class="col-lg-3 search-form">
+                <form action="">
+                    <input type="text" name="search-header" id="search-header">
+                </form>
+            </div>
+        </header>
+        <div class="title offset-lg-1 col-lg-10">
+            <h1><span>E</span>ORZEA COMPENDIUM</h1>
+        </div>
+        <div class="container offset-lg-1 col-lg-10">
+            <nav class="navbar navbar-expand nav-internal">
+                <ul class="navbar-nav row">
+                    <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="">Accueil</a></li>
+
+                    <li class="nav-item col-md-12 col-lg-2 dropdown show" >
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Guides</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">- Classes</a>
+                            <a class="dropdown-item" href="#">- PVE</a>
+                            <a class="dropdown-item" href="#">- PVP</a>
+                            <a class="dropdown-item" href="#">- Gold Saucer</a>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="">Outils</a></li>
+                    <li class="nav-item col-md-12 col-lg-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Histoire</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">- Univers</a>
+                            <a class="dropdown-item" href="#">- Personnages</a>
+                            <a class="dropdown-item" href="#">- Divers</a>
+                        </div>
+                    </li>
+                    <li class="nav-item col-md-12 col-lg-2">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Médias</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">- Officiels</a>
+                            <a class="dropdown-item" href="#">- Guides Vidéos</a>
+                            <a class="dropdown-item" href="#">- Capture d'écrans</a>
+                        </div>
+                    </li>
+                    <li class="nav-item col-md-12 col-lg-2 last-item">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Compte</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">- Se connecter</a>
+                            <a class="dropdown-item" href="#">- S'inscrire</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-content">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        <footer class="page-footer">
+            <div class="footer-copyright text-center py-2">
+                © Eorzea Compendium V1.00 - Créé & conçu par Steven LECLERC.
+                <br>FINAL FANTASY XIV (C) 2010 - 2019 SQUARE ENIX CO., Ltd. FINAL FANTASY est une marque déposée de Square Enix Holdings Co., Ltd.
+            </div>
+        </footer>
+        {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
