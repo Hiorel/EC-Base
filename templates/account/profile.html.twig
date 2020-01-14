@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil utilisateur{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h1>Modification du profil</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <img src="../uploads/avatar/{{ user.avatar }}" alt="Avatar de {{ user.name }}" class="avatar"> <br>
+    <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-check"></i> Enregistrer les modifications</button>
+        
+    {{ form_end(form) }}
+{% endblock %}

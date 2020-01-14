@@ -45,7 +45,7 @@
         <div class="container offset-lg-1 col-lg-10">
             <nav class="navbar navbar-expand nav-internal">
                 <ul class="navbar-nav row">
-                    <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="">Accueil</a></li>
+                    <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
 
                     <li class="nav-item col-md-12 col-lg-2 dropdown show" >
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Guides</a>
@@ -77,13 +77,27 @@
                     <li class="nav-item col-md-12 col-lg-2 last-item">
                         <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Compte</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">- Se connecter</a>
-                            <a class="dropdown-item" href="#">- S'inscrire</a>
+                            {% if app.user %}
+                                <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="../uploads/avatar/{{ app.user.avatar }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
+                                <a class="dropdown-item" href="{{ path('account_password') }}"><i class="fas fa-key"></i> &nbsp; Mot de passe</a>
+                                <a class="dropdown-item" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
+                                {% for role in app.user.roles %}
+                                    {% if role == 'ROLE_ADMIN' %}
+                                        <hr class="bg-light mt-1 mb-1">
+                                        <a class="dropdown-item" href="{{ path('admin_create_article') }}"><i class="fas fa-newspaper"></i> &nbsp; Créer un article</a>
+                                        <a class="dropdown-item" href="{{ path('admin_edit_article') }}"><i class="fas fa-edit"></i> &nbsp; Editer un article</a>
+                                        <a class="dropdown-item" href="{{ path('admin_user_management') }}"><i class="fas fa-user-tag"></i> &nbsp; Gestion des utilisateurs</a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <a class="dropdown-item" href="{{ path('account_login') }}"><i class="fas fa-sign-in-alt"></i> &nbsp; Se connecter</a>
+                                <a class="dropdown-item" href="{{ path('account_register') }}"><i class="fas fa-user-alt"></i> &nbsp; S'inscrire</a>
+                            {% endif %}
                         </div>
                     </li>
                 </ul>
             </nav>
-            <div class="main-content">
+            <div class="main-content py-3 px-3">
                 {% block body %}{% endblock %}
             </div>
         </div>
