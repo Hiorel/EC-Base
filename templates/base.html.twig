@@ -10,6 +10,8 @@
         <style>
             body{
                 background: url("{{asset('build/images/background.png')}}") center no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
             }
             @media (max-width: 370px){
                 header #search-header{background : #414042 url("{{asset('build/images/logo_search.png')}}") no-repeat center 50%;}
@@ -80,7 +82,7 @@
                             {% if app.user %}
                                 <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="../uploads/avatar/{{ app.user.avatar }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
                                 <a class="dropdown-item" href="{{ path('account_password') }}"><i class="fas fa-key"></i> &nbsp; Mot de passe</a>
-                                <a class="dropdown-item" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
+                                <a class="dropdown-item logout-color" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
                                 {% for role in app.user.roles %}
                                     {% if role == 'ROLE_ADMIN' %}
                                         <hr class="bg-light mt-1 mb-1">
@@ -104,7 +106,7 @@
         <footer class="page-footer">
             <div class="footer-copyright text-center py-2">
                 © Eorzea Compendium V1.00 - Créé & conçu par Steven LECLERC.
-                <br>FINAL FANTASY XIV (C) 2010 - 2019 SQUARE ENIX CO., Ltd. FINAL FANTASY est une marque déposée de Square Enix Holdings Co., Ltd.
+                <br>FINAL FANTASY XIV (C) 2010 - 2020 SQUARE ENIX CO., Ltd. FINAL FANTASY est une marque déposée de Square Enix Holdings Co., Ltd.
             </div>
         </footer>
         {{ encore_entry_script_tags('app') }}

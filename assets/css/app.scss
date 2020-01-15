@@ -15,9 +15,6 @@ $color-secondary-2:white;
 html{height:100%;}
 
 body{
-    background: url('/images/background.png') center no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
     display:flex;
     flex-direction: column;
     min-height:100%; 
@@ -75,6 +72,41 @@ header{
     box-shadow: 0 0 5px rgba(0,0,0,0.4);
     flex-grow:1;
 
+    hr.hr-title{
+        background-color:$color-primary-1;
+        border-top: 3px solid rgba(0,0,0,.1);
+        margin-bottom:0;
+    }
+
+    .block-title{
+        display:flex;
+        flex-direction: row;
+        margin-bottom:1rem;
+        position:relative;
+    }
+
+    .title-bar{
+        h1{
+            text-transform: uppercase;
+            font-size:1.5em;
+            font-weight: 600;
+        }
+
+        h1::first-letter{
+            color:$color-primary-2;
+        }
+    }
+
+    .bar-bar{
+        flex: auto;
+    }
+
+    .logo-bar{
+        position:absolute;
+        right:0;
+        bottom:22px;
+    }
+
 }
 
 .nav-internal{
@@ -119,11 +151,14 @@ header{
             padding-top:15px;
             padding-bottom:15px;
             text-transform: none;
+            overflow:hidden;
+        }
+
+        .logout-color{
+            color: $color-primary-2;
         }
 
         .dropdown-item:hover{background-color: $color-secondary-1;}
-
-        
     }
 
     .nav-item.col-md-12{padding:0;}
@@ -145,9 +180,8 @@ footer{
 
 .avatar {
     border-radius:50%;
-    width:200px;
-    height:200px;
-    background-color:lightgrey;
+    width:100px;
+    height:100px;
 }
 
 .avatar-micro {
@@ -168,7 +202,7 @@ footer{
         }
     }
 
-    .nav-internal li{border-right: 0;}
+    .nav-internal ul li{border-right: 0;}
 
     .navbar-expand .navbar-nav .dropdown-menu {
         position: relative;
@@ -194,12 +228,15 @@ footer{
         min-width:125px;
         width:125px;
     }
+
+    .logo-bar{
+        display:none;
+    }
 }
 
 @media (max-width: 370px){
     header #search-header{
-        min-width:50px;
-        width:50px;
+display:none;
     }
 
     header #search-header:focus{background-image:none;}

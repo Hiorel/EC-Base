@@ -4,17 +4,41 @@
 
 {% block body %}
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success mb-4">
             {{ message }}
         </div>
     {% endfor %}
-    <h1>Modification du profil</h1>
-
+    <div class="block-title">
+        <div class="title-bar"><h1>Modification du profil &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-
-    <img src="../uploads/avatar/{{ user.avatar }}" alt="Avatar de {{ user.name }}" class="avatar"> <br>
+    <div class="row">
+        <div class="col-md">
+            <div class="bg-light p-2">
+                <h2>Informations générales</h2>
+                <hr>
+                {{ form_row(form.name) }}
+                {{ form_row(form.email) }}
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="bg-light p-2">
+                <h2>Modifier votre avatar</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <img src="../uploads/avatar/{{ user.avatar }}" alt="Avatar de {{ user.name }}" class="avatar">
+                    </div>
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-7">
+                        {{ form_row(form.avatar) }}
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-check"></i> Enregistrer les modifications</button>
-        
     {{ form_end(form) }}
 {% endblock %}

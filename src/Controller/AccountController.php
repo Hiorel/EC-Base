@@ -64,33 +64,37 @@ class AccountController extends AbstractController
      */
     public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
         $user = new User();
-
+        
         $form = $this->createForm(RegistrationType::class, $user);
 
         $form->handleRequest($request);
   
         if($form->isSubmitted() && $form->isValid()) {
-                        
-            $brochureFile = $form['avatar']->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                
-                // Move the file to the directory where brochures are stored
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('avatar_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+            
+            if(($form['avatar'] == NULL)) {
+                $brochureFile = $form['avatar']->getData();
+                if ($brochureFile) {
+                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $brochureFile->move(
+                            $this->getParameter('avatar_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $user->setAvatar($newFilename);
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $user->setAvatar($newFilename);
+                }
+            } else {
+                $user->setAvatar('no_avatar.png');
             }
 
             $hash = $encoder->encodePassword($user, $user->getHash());
@@ -120,35 +124,38 @@ class AccountController extends AbstractController
      */
     public function profile(Request $request, EntityManagerInterface $manager) {
         $user = $this->getUser();
-
+        $avatarUser = $this->getUser()->getAvatar();
         $form = $this->createForm(AccountType::class, $user);
 
         $form->handleRequest($request);
-
+        
         if($form->isSubmitted() && $form->isValid()) {
+            if($form['avatar']->getData() !== $user->getAvatar()) {
+                $brochureFile = $form['avatar']->getData();
+                if ($brochureFile) {
+                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $brochureFile->move(
+                            $this->getParameter('avatar_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
 
-            $brochureFile = $form['avatar']->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                
-                // Move the file to the directory where brochures are stored
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('avatar_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $user->setAvatar($newFilename);
                 }
-
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $user->setAvatar($newFilename);
+            } else {
+                
+                $user->setAvatar($avatarUser);
             }
-            
+                
             $manager->persist($user);
             $manager->flush();
 

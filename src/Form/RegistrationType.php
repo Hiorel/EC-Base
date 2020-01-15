@@ -38,8 +38,9 @@ class RegistrationType extends AbstractType
             ->add('name', TextType::class, $this->getConfiguration("Pseudo (Obligatoire)", "Votre pseudo..."))
             ->add('email', EmailType::class, $this->getConfiguration("Email (Obligatoire)", "Votre adresse email..."))
             ->add('avatar', FileType::class, [
-                  'label' => 'Avatar (Optionnel)',
-                  'attr' => ['placeholder' => "Format PNG ou JPG (Poids 5 Mo maximum)",
+                  'label' => 'Avatar (Optionnel / Format PNG ou JPG (Poids 5 Mo maximum))',
+                  'required' => false,
+                  'attr' => ['placeholder' => "Aucun fichier",
                 'class' => 'form-control mb-3',
             ],
 
