@@ -165,6 +165,17 @@ header{
 
 }
 
+.error-page {
+    h1{
+        color: $color-primary-2;
+    }
+
+    .btn-primary{
+        background-color: $color-primary-1;
+        border:0;
+    }
+}
+
 .main-content{margin-top:15px;}
 
 .main-content .custom-file-label{
