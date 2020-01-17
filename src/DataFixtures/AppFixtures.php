@@ -66,7 +66,7 @@ class AppFixtures extends Fixture
             }
 
             $newArticle->setTitle($faker->sentence())
-                       ->setCover($faker->imageUrl())
+                       ->setCover('img_article.jpg')
                        ->setCreatedAt($faker->dateTimeBetween('-6 months'))
                        ->setType($typeTmp)
                        ->setUrlExt($urlExt)

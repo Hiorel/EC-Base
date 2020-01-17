@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Article;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
@@ -26,9 +28,45 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editArticle()
+    public function editArticle(EntityManagerInterface $manager)
     {
-        return $this->render('admin/editArticle.html.twig');
+        $articles = $manager->createQuery('SELECT a FROM App\Entity\Article a ORDER BY a.createdAt DESC')->getResult();
+
+        return $this->render('admin/editArticle.html.twig', [
+            'articles' => $articles
+        ]);
+    }
+
+    /**
+     * Permet l'édition d'un article en particulier
+     *
+     * @Route("/admin/edit-article/{id}", name="admin_edit_one_article")
+     * 
+     * @return Response
+     */
+    public function editOneArticle(Article $article) {
+        return $this->render('admin/editOneArticle.html.twig', [
+            'article' => $article
+        ]);
+    }
+
+    /**
+     * Supprimer l'article en variable
+     * 
+     * @Route("/admin/remove-article/{id}", name="admin_remove_article")
+     *
+     * @return Response
+     */
+    public function removeOneArticle(EntityManagerInterface $manager, Article $article) {
+        $manager->remove($article);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'annonce <strong>{$article->getTitle()}</strong> a bien été supprimée"
+        );
+
+        return $this->redirectToRoute('admin_edit_article');
     }
 
     /**
