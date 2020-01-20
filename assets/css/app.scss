@@ -212,6 +212,20 @@ footer{
     display: table;
 }
 
+.page-link {
+    color: $color-primary-1;
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: $color-primary-1;
+    border-color: $color-primary-1;
+}
+
+.page-link:hover {
+    color: $color-primary-2;
+}
+
 @media (max-width: 992px){
     .title{
         min-height:100px;

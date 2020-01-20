@@ -7,7 +7,9 @@ use App\Entity\Article;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
+use App\Service\PaginationService;
 use App\Form\PasswordUpdateTypeAdmin;
+use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,23 +33,24 @@ class AdminController extends AbstractController
     /**
      * Permet l'édition et la suppression d'un article
      * 
-     * @Route("/admin/edit-article", name="admin_edit_article")
+     * @Route("/admin/edit-article/{page<\d+>?1}", name="admin_edit_article")
      * 
      * @return Response
      */
-    public function editArticle(EntityManagerInterface $manager)
+    public function editArticle(ArticleRepository $repo, EntityManagerInterface $manager, $page, PaginationService $pagination)
     {
-        $articles = $manager->createQuery('SELECT a FROM App\Entity\Article a ORDER BY a.createdAt DESC')->getResult();
+        $pagination->setEntityClass(Article::class)
+                   ->setCurrentPage($page);
 
         return $this->render('admin/editArticle.html.twig', [
-            'articles' => $articles
+            'pagination' => $pagination
         ]);
     }
 
     /**
      * Permet l'édition d'un article en particulier
      *
-     * @Route("/admin/edit-article/{id}", name="admin_edit_one_article")
+     * @Route("/admin/edit-article/{id}/edit", name="admin_edit_one_article")
      * 
      * @return Response
      */
@@ -79,16 +82,17 @@ class AdminController extends AbstractController
     /**
      * Permet de gérer les utilisateurs
      * 
-     * @Route("/admin/user-management", name="admin_user_management")
+     * @Route("/admin/user-management/{page<\d+>?1}", name="admin_user_management")
      *
      * @return void
      */
-    public function userManagement (EntityManagerInterface $manager) {
+    public function userManagement (EntityManagerInterface $manager, $page, PaginationService $pagination) {
 
-        $users = $manager->createQuery('SELECT u FROM App\Entity\User u')->getResult();
+        $pagination->setEntityClass(User::class)
+                   ->setCurrentPage($page);
 
         return $this->render('admin/userManagement.html.twig', [
-            'users' => $users
+            'pagination' => $pagination
         ]);
     }
 
