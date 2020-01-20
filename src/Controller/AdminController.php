@@ -4,9 +4,15 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Article;
+use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
+use App\Form\PasswordUpdateType;
+use App\Form\PasswordUpdateTypeAdmin;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
 {
@@ -93,8 +99,50 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editOneUser(User $user) {
+    public function editOneUser(Request $request, EntityManagerInterface $manager,User $user) {
+        $avatarUser = $user->getAvatar();
+        $form = $this->createForm(AccountType::class, $user);
+
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+            if($form['avatar']->getData() !== $user->getAvatar()) {
+                $brochureFile = $form['avatar']->getData();
+                if ($brochureFile) {
+                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $brochureFile->move(
+                            $this->getParameter('avatar_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $user->setAvatar($newFilename);
+                }
+            } else {
+                
+                $user->setAvatar($avatarUser);
+            }
+                
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Les données du profil ont été modifiée avec succès !"
+            );
+        }
+
         return $this->render('admin/editOneUser.html.twig', [
+            'form' => $form->createView(),
             'user' => $user
         ]);
     }
@@ -116,5 +164,40 @@ class AdminController extends AbstractController
         );
 
         return $this->redirectToRoute('admin_user_management');
+    }
+
+      /**
+     * Permet de modifier le mot de passe
+     *
+     * @Route("/admin/password-update/{id}", name="admin_edit_password")
+     * 
+     * @return Response
+     */
+    public function updatePasswordUser(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, User $user) {
+        $passwordUpdate = new PasswordUpdate();
+
+        $form = $this->createForm(PasswordUpdateTypeAdmin::class, $passwordUpdate);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+               $newPassword = $passwordUpdate->getNewPassword();
+               $hash = $encoder->encodePassword($user, $newPassword);
+
+               $user->setHash($hash);
+
+               $manager->persist($user);
+               $manager->flush();
+
+               $this->addFlash(
+                'success',
+                "Le mot de passe a bien été modifiée avec succès !"
+            );
+        }
+
+        return $this->render('admin/passwordAdmin.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
     }
 }

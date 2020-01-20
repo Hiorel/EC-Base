@@ -85,7 +85,7 @@
                                 {% else %}
                                     {% set avatar_tmp = app.user.avatar %}
                                 {% endif %}
-                                <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="../uploads/avatar/{{ avatar_tmp }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
+                                <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="/uploads/avatar/{{ avatar_tmp }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
                                 <a class="dropdown-item" href="{{ path('account_password') }}"><i class="fas fa-key"></i> &nbsp; Mot de passe</a>
                                 <a class="dropdown-item logout-color" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
                                 {% for role in app.user.roles %}

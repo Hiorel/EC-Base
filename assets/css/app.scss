@@ -208,6 +208,10 @@ footer{
     max-width : 200px;
 }
 
+.table-responsive{
+    display: table;
+}
+
 @media (max-width: 992px){
     .title{
         min-height:100px;
@@ -227,6 +231,9 @@ footer{
         position: relative;
         top:0;
         text-align:center;
+    }
+    .table-responsive{
+        display: block;
     }
 }
 
