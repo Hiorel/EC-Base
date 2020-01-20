@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de l'utilisateur numéro {{ user.id }} {% endblock %}
+
+{% block body %}
+    <div class="block-title">
+        <div class="title-bar"><h1>édition de l'utilisateur {{ user.id }} &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+   
+{% endblock %}

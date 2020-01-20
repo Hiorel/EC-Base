@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -76,7 +77,44 @@ class AdminController extends AbstractController
      *
      * @return void
      */
-    public function userManagement () {
-        return $this->render('admin/userManagement.html.twig');
+    public function userManagement (EntityManagerInterface $manager) {
+
+        $users = $manager->createQuery('SELECT u FROM App\Entity\User u')->getResult();
+
+        return $this->render('admin/userManagement.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * Permet l'édition d'un utilisateur en particulier
+     *
+     * @Route("/admin/edit-user/{id}", name="admin_edit_one_user")
+     * 
+     * @return Response
+     */
+    public function editOneUser(User $user) {
+        return $this->render('admin/editOneUser.html.twig', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Supprimer l'utilisateur en variable
+     * 
+     * @Route("/admin/remove-user/{id}", name="admin_remove_user")
+     *
+     * @return Response
+     */
+    public function removeOneUser(EntityManagerInterface $manager, User $user) {
+        $manager->remove($user);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'utilisateur <strong>{$user->getName()}</strong> a bien été supprimée"
+        );
+
+        return $this->redirectToRoute('admin_user_management');
     }
 }

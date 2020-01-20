@@ -29,7 +29,7 @@
                         <td>{{article.id}}</td>
                         <td>{{article.title}}</td>
                         <td>{{article.createdAt|date('d/m/Y H:i')}}</td>
-                        <td><img src="../uploads/articles/{{article.cover}}" alt="" class="cover-edit"></td>
+                        <td class="cover-td"><img src="../uploads/articles/{{article.cover}}" alt="" class="cover-edit"></td>
                         <td>
                             <a href="{{ path('admin_edit_one_article', {'id': article.id}) }}" class="btn btn-primary">
                                 <i class="fas fa-pen"></i>

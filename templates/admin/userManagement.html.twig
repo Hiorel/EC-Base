@@ -3,9 +3,43 @@
 {% block title %}Gestion des utilisateurs{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mb-4">
+            {{ message|raw }}
+        </div>
+    {% endfor %}
     <div class="block-title">
         <div class="title-bar"><h1>Gestion des utilisateurs &nbsp;</h1></div>
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
+    <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Avatar</th>
+                    <th>Pseudo</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{user.id}}</td>
+                        <td class="cover-td"><img src="../uploads/avatar/{{user.avatar}}" alt="" class="avatar"></td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>
+                            <a href="{{ path('admin_edit_one_user', {'id': user.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="{{ path('admin_remove_user', {'id': user.id}) }}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 {% endblock %}
