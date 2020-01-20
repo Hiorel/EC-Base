@@ -29,8 +29,7 @@ class AccountController extends AbstractController
      * 
      * @return Response
      */
-    public function login(AuthenticationUtils $utils)
-    {
+    public function login(AuthenticationUtils $utils)    {
         /*if(!($this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'))){
             return $this->redirectToRoute('account_profile');
         }*/
@@ -71,7 +70,7 @@ class AccountController extends AbstractController
   
         if($form->isSubmitted() && $form->isValid()) {
             
-            if(($form['avatar'] == NULL)) {
+            if($form['avatar']->getData()) {
                 $brochureFile = $form['avatar']->getData();
                 if ($brochureFile) {
                     $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
