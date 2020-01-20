@@ -40,7 +40,7 @@ class AdminController extends AbstractController
     public function editArticle(ArticleRepository $repo, EntityManagerInterface $manager, $page, PaginationService $pagination)
     {
         $pagination->setEntityClass(Article::class)
-                   ->setCurrentPage($page);
+                   ->setPage($page);
 
         return $this->render('admin/editArticle.html.twig', [
             'pagination' => $pagination
@@ -89,7 +89,7 @@ class AdminController extends AbstractController
     public function userManagement (EntityManagerInterface $manager, $page, PaginationService $pagination) {
 
         $pagination->setEntityClass(User::class)
-                   ->setCurrentPage($page);
+                   ->setPage($page);
 
         return $this->render('admin/userManagement.html.twig', [
             'pagination' => $pagination

@@ -42,5 +42,5 @@
             {% endfor %}
         </tbody>
     </table>
-    {% include "partials/pagination.html.twig" with {'route': 'admin_edit_article'} %}
+    {{ pagination.display() }}
 {% endblock %}
