@@ -8,6 +8,7 @@ use App\Entity\Type;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Entity\Content;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -39,65 +40,88 @@ class AppFixtures extends Fixture
 
         $manager->persist($adminUser);
 
-        // Ajout des Types d'article
+        $users = [];
+        for ($i=0; $i < 20; $i++) { 
+            $user = new User();
+            $user->setName($faker->firstname())
+                  ->setEmail($faker->email)
+                  ->setAvatar("no_avatar.png")
+                  ->setHash($this->encoder->encodePassword($user, 'password'));
 
-        $typeArt = new Type();
-        $typeArt->setName('Lodestone');
-        $manager->persist($typeArt);
+            $manager->persist($user);
+            $users[] = $user;
+        }
+                 
+            // Ajout des Types d'article
 
-        $typeArt2 = new Type();
-        $typeArt2->setName('Guide');
-        $manager->persist($typeArt2);
+            $typeArt = new Type();
+            $typeArt->setName('Lodestone');
+            $manager->persist($typeArt);
 
-        // Ajout de faux Articles
+            $typeArt2 = new Type();
+            $typeArt2->setName('Guide');
+            $manager->persist($typeArt2);
 
-        $repoType = [$typeArt, $typeArt2];
+            // Ajout de faux Articles
 
-        for ($i=0; $i < 10; $i++) { 
-         
-            $newArticle = new Article();
+            $repoType = [$typeArt, $typeArt2];
 
-            $typeTmp =  $repoType[mt_rand(0, 1)];
-            if($typeTmp->getName() == 'Lodestone') {
-                $urlExt = $faker->url() ;
-            }
-            else {
-                $urlExt = NULL;
-            }
-
-            $newArticle->setTitle($faker->sentence())
-                       ->setCover('img_article.jpg')
-                       ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                       ->setType($typeTmp)
-                       ->setUrlExt($urlExt)
-                       ->setUser($adminUser);
-
-            $orderArt = 0;           
-            for ($j=0; $j <= mt_rand(2,5); $j++) {
-                $orderArt++;
-
-                $image = new Image();
+            for ($i=0; $i < 10; $i++) { 
                 
-                $image->setUrl($faker->imageUrl())
-                      ->setCaption($faker->sentence())
-                      ->setOrderArt($orderArt)
-                      ->setArticle($newArticle);
+                $newArticle = new Article();
 
-                $manager->persist($image);
+                $typeTmp =  $repoType[mt_rand(0, 1)];
+                if($typeTmp->getName() == 'Lodestone') {
+                    $urlExt = $faker->url() ;
+                }
+                else {
+                    $urlExt = NULL;
+                }
 
-                $orderArt++;
+                $newArticle->setTitle($faker->sentence())
+                           ->setCover('img_article.jpg')
+                           ->setCreatedAt($faker->dateTimeBetween('-6 months'))
+                           ->setType($typeTmp)
+                           ->setUrlExt($urlExt)
+                           ->setUser($adminUser);
 
-                $content = new Content();
-                
-                $content->setContentArt($faker->paragraph())
-                      ->setOrderArt($orderArt)
-                      ->setArticle($newArticle);
+                $orderArt = 0;           
+                for ($j=0; $j <= mt_rand(2,5); $j++) {
+                    $orderArt++;
 
-                $manager->persist($content);
+                    $image = new Image();
+                        
+                    $image->setUrl($faker->imageUrl())
+                          ->setCaption($faker->sentence())
+                          ->setOrderArt($orderArt)
+                          ->setArticle($newArticle);
+
+                    $manager->persist($image);
+
+                    $orderArt++;
+
+                    $content = new Content();
+                        
+                    $content->setContentArt($faker->paragraph())
+                            ->setOrderArt($orderArt)
+                            ->setArticle($newArticle);
+
+                    $manager->persist($content);
+                }
+
+                for ($k=0; $k < count($users); $k++) { 
+                    if(mt_rand(0,1)) { 
+                        $comment = new Comment();
+                        $comment->setContent($faker->paragraph())
+                                ->setCreatedAt($faker->dateTimeBetween('-6 months'))
+                                ->setUser($users[$k])
+                                ->setArticle($newArticle);
+
+                        $manager->persist($comment);
+                    }
+                }
+                $manager->persist($newArticle);
             }
-
-            $manager->persist($newArticle);
-         }
-        $manager->flush();
+         $manager->flush();
     }
 }

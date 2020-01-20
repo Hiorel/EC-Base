@@ -25,6 +25,13 @@
             <h1><span>E</span>ORZEA COMPENDIUM</h1>
         </div>
         <div class="container offset-lg-1 col-lg-10">
+             {% if app.user %}
+                {% if app.user.avatar|slice(app.user.avatar|length - 3, 3) == 'tmp' %}
+                    {% set avatar_tmp = 'no_avatar.png' %}
+                {% else %}
+                    {% set avatar_tmp = app.user.avatar %}
+                {% endif %}
+            {% endif %}
             {% include "partials/navig.html.twig" %}
             <div class="main-content py-3 px-3">
                 {% block body %}{% endblock %}
