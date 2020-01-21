@@ -62,6 +62,13 @@ class PaginationService {
     private $templatePath;
 
     /**
+     * Le chemin vers le template qui contient la pagination
+     *
+     * @var string
+     */
+    private $idUser;
+
+    /**
      * Constructeur du service de pagination qui sera appelé par Symfony
      * 
      * N'oubliez pas de configurer votre fichier services.yaml afin que Symfony sache quelle valeur
@@ -102,6 +109,28 @@ class PaginationService {
         ]);
     }
 
+        /**
+     * Permet d'afficher le rendu de la navigation au sein d'un template twig !
+     * 
+     * On se sert ici de notre moteur de rendu afin de compiler le template qui se trouve au chemin
+     * de notre propriété $templatePath, en lui passant les variables :
+     * - page  => La page actuelle sur laquelle on se trouve
+     * - pages => le nombre total de pages qui existent
+     * - route => le nom de la route à utiliser pour les liens de navigation
+     *
+     * Attention : cette fonction ne retourne rien, elle affiche directement le rendu
+     * 
+     * @return void
+     */
+    public function display2() {
+        $this->twig->display($this->templatePath, [
+            'page' => $this->currentPage,
+            'pages' => $this->getPages2(),
+            'route' => $this->route,
+            'idUser' => $this->getIdUser()
+        ]);
+    }
+
     /**
      * Permet de récupérer le nombre de pages qui existent sur une entité particulière
      * 
@@ -130,6 +159,33 @@ class PaginationService {
     }
 
     /**
+     * Même que GetPages mais avec une requete différente
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas configurée
+     * 
+     * @return int
+     */
+    public function getPages2(): int {
+        if(empty($this->entityClass)) {
+            // Si il n'y a pas d'entité configurée, on ne peut pas charger le repository, la fonction
+            // ne peut donc pas continuer !
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+
+        // 1) Connaitre le total des enregistrements de la table
+        $total = count($this->manager
+                        ->getRepository($this->entityClass)
+                        ->findByUser($this->idUser));
+
+        // 2) Faire la division, l'arrondi et le renvoyer
+        return ceil($total / $this->limit);
+    }
+
+
+
+
+
+    /**
      * Permet de récupérer les données paginées pour une entité spécifique
      * 
      * Elle se sert de Doctrine afin de récupérer le repository pour l'entité spécifiée
@@ -152,6 +208,28 @@ class PaginationService {
         return $this->manager
                         ->getRepository($this->entityClass)
                         ->findBy([], [], $this->limit, $offset);
+    }
+
+
+        /**
+     * Pareil que GetData mais avec une requete spécifique
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas définie
+     *
+     * @return array
+     */
+    public function getData2() {
+        if(empty($this->entityClass)) {
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+        // 1) Calculer l'offset
+        $offset = $this->currentPage * $this->limit - $this->limit;
+
+        // 2) Demander au repository de trouver les éléments à partir d'un offset et 
+        // dans la limite d'éléments imposée (voir propriété $limit)
+        return $this->manager
+                        ->getRepository($this->entityClass)
+                        ->findBy(array('user' => $this->idUser), [], $this->limit, $offset);
     }
 
     /**
@@ -183,6 +261,27 @@ class PaginationService {
      */
     public function setLimit(int $limit): self {
         $this->limit = $limit;
+
+        return $this;
+    }
+
+        /**
+     * Permet de récupérer l'id de l'utilisateur actuellement choisi
+     *
+     * @return int
+     */
+    public function getIdUser(): int {
+        return $this->idUser;
+    }
+
+    /**
+     * Permet de spécifier l'utilisateur actuellement choisi'
+     *
+     * @param int $idUser
+     * @return self
+     */
+    public function setIdUser(int $idUser): self {
+        $this->idUser = $idUser;
 
         return $this;
     }

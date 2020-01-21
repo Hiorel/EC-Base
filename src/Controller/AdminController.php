@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
@@ -99,11 +100,16 @@ class AdminController extends AbstractController
     /**
      * Permet l'édition d'un utilisateur en particulier
      *
-     * @Route("/admin/edit-user/{id}", name="admin_edit_one_user")
+     * @Route("/admin/edit-user/{id}/{page<\d+>?1}", name="admin_edit_one_user")
      * 
      * @return Response
      */
-    public function editOneUser(Request $request, EntityManagerInterface $manager,User $user) {
+    public function editOneUser(Request $request, EntityManagerInterface $manager,User $user, $page, PaginationService $pagination) {
+        $pagination->setEntityClass(Comment::class)
+                   ->setPage($page)
+                   ->setTemplatePath('partials/paginationAlt.html.twig')
+                   ->setIdUser($user->getId());
+        
         $avatarUser = $user->getAvatar();
         $form = $this->createForm(AccountType::class, $user);
 
@@ -147,7 +153,8 @@ class AdminController extends AbstractController
 
         return $this->render('admin/editOneUser.html.twig', [
             'form' => $form->createView(),
-            'user' => $user
+            'user' => $user,
+            'pagination' => $pagination
         ]);
     }
 
