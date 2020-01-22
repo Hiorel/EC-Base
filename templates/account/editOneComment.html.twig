@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de votre commentaire {% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mb-4">
+            {{ message|raw }}
+        </div>
+    {% endfor %}
+    <div class="block-title">
+        <div class="title-bar"><h1>édition de votre commentaire &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-primary mt-3 mb-5 mr-3"><i class="fas fa-check"></i> Enregistrer les modifications</button>
+    <a href="{{ path('article_show', {'id': comment.article.id}) }}) }}" class="btn btn-secondary mt-3 mb-5"><i class="fas fa-newspaper"></i> &nbsp; Retour à l'article</a>
+    {{ form_end(form) }}
+{% endblock %}

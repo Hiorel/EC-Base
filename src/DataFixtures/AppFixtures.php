@@ -91,7 +91,7 @@ class AppFixtures extends Fixture
 
                     $image = new Image();
                         
-                    $image->setUrl($faker->imageUrl())
+                    $image->setUrl('http://placekitten.com/600/350')
                           ->setCaption($faker->sentence())
                           ->setOrderArt($orderArt)
                           ->setArticle($newArticle);

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\AccountType;
+use App\Form\CommentType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
 use App\Service\PaginationService;
@@ -175,6 +176,74 @@ class AdminController extends AbstractController
         );
 
         return $this->redirectToRoute('admin_user_management');
+    }
+
+        /**
+     * Supprimer le commentaire en variable
+     * 
+     * @Route("/admin/remove-comment/{id}/{idUser}", name="admin_remove_comment")
+     *
+     * @return Response
+     */
+    public function removeOneComment(EntityManagerInterface $manager, Comment $comment, $idUser) {
+
+        $manager->remove($comment);
+        $manager->flush();
+
+        $this->addFlash(
+            'successComment',
+            "Le commentaire a bien été supprimée"
+        );
+
+        return $this->redirectToRoute('admin_edit_one_user', array('id' => $idUser));
+    }
+
+            /**
+     * Supprimer le commentaire en variable
+     * 
+     * @Route("/admin/remove-comment/{id}/{idArticle}", name="admin_remove_comment_art")
+     *
+     * @return Response
+     */
+    public function removeOneCommentArt(EntityManagerInterface $manager, Comment $comment, $idArticle) {
+
+        $manager->remove($comment);
+        $manager->flush();
+
+        $this->addFlash(
+            'successComment',
+            "Le commentaire a bien été supprimée"
+        );
+
+        return $this->redirectToRoute('article_show', array('id' => $idArticle));
+    }
+
+     /**
+     * Permet l'édition d'un commentaire
+     *
+     * @Route("/admin/edit-comment/{idUser}/{id}", name="admin_edit_one_comment")
+     * 
+     * @return Response
+     */
+    public function editOneComment(Request $request, EntityManagerInterface $manager, Comment $comment) {
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Le commentaire numéro {$comment->getId()} a bien été modifié !"
+            );
+        }
+        
+        return $this->render('admin/editOneComment.html.twig', [
+            'form' => $form->createView(),
+            'comment' => $comment
+        ]);
     }
 
       /**

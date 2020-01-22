@@ -13,25 +13,27 @@
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-    <table class="table table-hover table-responsive">
-        <thead>
-            <tr>
+    <table class="table table-hover table-striped table-responsive">
+        <thead class="thead-dark">
+            <tr class="text-center">
                 <th>Id</th>
                 <th>Titre</th>
                 <th>Date</th>
                 <th>Cover</th>
-                <th></th>
+                <th>Type</th>
+                <th class="d-flex justify-content-center">Actions</th>
             </tr>
         </thead>
          <tbody>
             {% for article in pagination.data %}
-                <tr>
+                <tr class="text-center">
                     <td>{{article.id}}</td>
                     <td>{{article.title}}</td>
                     <td>{{article.createdAt|date('d/m/Y H:i')}}</td>
                     <td class="cover-td"><img src="/uploads/articles/{{article.cover}}" alt="" class="cover-edit"></td>
-                    <td>
-                        <a href="{{ path('admin_edit_one_article', {'id': article.id}) }}" class="btn btn-primary">
+                    <td>{{article.type.name}}</td>
+                    <td class="d-flex justify-content-center">
+                        <a href="{{ path('admin_edit_one_article', {'id': article.id}) }}" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
                         </a>
                         <a href="{{ path('admin_remove_article', {'id': article.id}) }}" class="btn btn-danger">

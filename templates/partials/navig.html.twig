@@ -33,7 +33,6 @@
                 {% if app.user %}
                     <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="/uploads/avatar/{{ avatar_tmp }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
                     <a class="dropdown-item" href="{{ path('account_password') }}"><i class="fas fa-key"></i> &nbsp; Mot de passe</a>
-                    <a class="dropdown-item logout-color" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
                     {% for role in app.user.roles %}
                         {% if role == 'ROLE_ADMIN' %}
                             <hr class="bg-light mt-1 mb-1">
@@ -42,6 +41,8 @@
                             <a class="dropdown-item" href="{{ path('admin_user_management') }}"><i class="fas fa-user-tag"></i> &nbsp; Utilisateurs</a>
                         {% endif %}
                     {% endfor %}
+                    <hr class="bg-light mt-1 mb-1">
+                    <a class="dropdown-item logout-color" href="{{ path('account_logout') }}"><i class="fas fa-sign-out-alt"></i> &nbsp; Se déconnecter</a>
                 {% else %}
                     <a class="dropdown-item" href="{{ path('account_login') }}"><i class="fas fa-sign-in-alt"></i> &nbsp; Se connecter</a>
                     <a class="dropdown-item" href="{{ path('account_register') }}"><i class="fas fa-user-alt"></i> &nbsp; S'inscrire</a>

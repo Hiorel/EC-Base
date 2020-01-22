@@ -5,7 +5,7 @@
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mb-4">
-            {{ message }}
+            {{ message|raw }}
         </div>
     {% endfor %}
     <div class="block-title">
@@ -46,34 +46,40 @@
     </div>
     <button type="submit" class="btn btn-primary mt-3 mb-5"><i class="fas fa-check"></i> Enregistrer les modifications</button>
     {{ form_end(form) }}
-    <div class="block-title">
+
+    {% for message in app.flashes('successComment') %}
+        <div class="alert alert-success mb-4">
+            {{ message|raw }}
+        </div>
+    {% endfor %}
+    <div id="anchorComm" class="block-title">
         <div class="title-bar"><h1>Commentaires de l'utilisateur {{ user.id }} &nbsp;</h1></div>
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
     <div class="row">
-        <table class="table table-hover table-responsive">
+        <table class="table table-hover table-striped table-responsive">
             <thead class="thead-dark">
-                <tr>
+                <tr class="text-center">
                     <th>Id</th>
                     <th>Crée le</th>
                     <th>Contenu</th>
                     <th>Article</th>
-                    <th>Actions</th>
+                    <th class="d-flex justify-content-center border-bottom-0">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for comment in pagination.getData2 %}
-                <tr>
+                <tr class="text-center">
                     <td>{{comment.id}}</td>
                     <td>{{comment.createdAt|date('d/m/Y H:i')}}</td>
                     <td>{{comment.content}}</td>
                     <td><a href="{{ path('admin_edit_one_article', {'id': comment.article.id}) }}" target="_blank">{{comment.article.title}}</a></td>
-                    <td class="d-flex justify-content-center">
-                        <a href="{{ path('admin_edit_one_article', {'id': comment.id}) }}" class="btn btn-primary">
+                    <td class="d-flex justify-content-center border-top-0">
+                        <a href="{{ path('admin_edit_one_comment', {'id': comment.id, 'idUser': comment.user.id}) }}" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
                         </a>
-                        <a href="{{ path('admin_remove_article', {'id': comment.id}) }}" class="btn btn-danger">
+                        <a href="{{ path('admin_remove_comment', {'id': comment.id, 'idUser': user.id}) }}" class="btn btn-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>

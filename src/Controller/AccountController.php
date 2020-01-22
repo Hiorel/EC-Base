@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\AccountType;
+use App\Form\CommentType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
@@ -11,6 +14,7 @@ use Symfony\Component\Form\FormError;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -209,6 +213,36 @@ class AccountController extends AbstractController
 
         return $this->render('account/password.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet l'édition d'un commentaire
+     *
+     * @Route("/account/edit-comment/{idArt}/{id}", name="account_edit_one_comment")
+     * 
+     * @Security("is_granted('ROLE_ADMIN') or user === comment.getUser()", message="Ce commentaire ne vous appartient pas, vous ne pouvez pas le modifier")
+     * 
+     * @return Response
+     */
+    public function editOneComment(Request $request, EntityManagerInterface $manager, Comment $comment) {
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre commentaire a bien été modifié !"
+            );
+        }
+        
+        return $this->render('account/editOneComment.html.twig', [
+            'form' => $form->createView(),
+            'comment' => $comment
         ]);
     }
 }

@@ -13,28 +13,28 @@
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-    <table class="table table-hover table-responsive">
-        <thead>
-            <tr>
+    <table class="table table-hover table-striped table-responsive">
+        <thead class="thead-dark">
+            <tr class="text-center">
                 <th>Id</th>
                 <th>Avatar</th>
                 <th>Pseudo</th>
                 <th>Email</th>
-                <th></th>
+                <th class="d-flex justify-content-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for user in pagination.data %}
-                <tr>
+                <tr class="text-center">
                     <td>{{user.id}}</td>
                     <td class="cover-td"><img src="/uploads/avatar/{{user.avatar}}" alt="Avatar" class="avatar"></td>
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
-                    <td>
-                        <a href="{{ path('admin_edit_one_user', {'id': user.id}) }}" alt="Edition du profil" class="btn btn-primary">
+                    <td class="d-flex justify-content-center">
+                        <a href="{{ path('admin_edit_one_user', {'id': user.id}) }}" alt="Edition du profil" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
                         </a>
-                        <a href="{{ path('admin_edit_password', {'id': user.id}) }}" alt="Modification du mot de passe" class="btn btn-info">
+                        <a href="{{ path('admin_edit_password', {'id': user.id}) }}" alt="Modification du mot de passe" class="btn btn-info mr-1">
                             <i class="fas fa-key"></i>
                         </a>
                         <a href="{{ path('admin_remove_user', {'id': user.id}) }}" alt="Supprimer l'utilisateur" class="btn btn-danger">
