@@ -4,27 +4,28 @@
         <li class="nav-item col-md-12 col-lg-2 dropdown show" >
             <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Guides</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">- Classes</a>
-                <a class="dropdown-item" href="#">- PVE</a>
-                <a class="dropdown-item" href="#">- PVP</a>
-                <a class="dropdown-item" href="#">- Gold Saucer</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide Classe' }) }}"><i class="fas fa-user-graduate"></i> &nbsp; Classes</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide PVE' }) }}"><i class="fas fa-meteor"></i> &nbsp; PVE</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide PVP' }) }}"><i class="fas fa-fist-raised"></i> &nbsp; PVP</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide Artisanat' }) }}"><i class="fas fa-hammer"></i> &nbsp; Artisanat</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide Gold Saucer' }) }}"><i class="fas fa-dice"></i> &nbsp; Gold Saucer</a>
             </div>
         </li>
         <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="{{ path('tools') }}">Outils</a></li>
         <li class="nav-item col-md-12 col-lg-2">
             <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Histoire</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">- Univers</a>
-                <a class="dropdown-item" href="#">- Personnages</a>
-                <a class="dropdown-item" href="#">- Divers</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Univers' }) }}"><i class="fas fa-globe"></i> &nbsp; Univers</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Personnages' }) }}"><i class="fas fa-users"></i> &nbsp; Personnages</a>
+                <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Divers' }) }}"><i class="fas fa-book-open"></i> &nbsp; Divers</a>
             </div>
         </li>
         <li class="nav-item col-md-12 col-lg-2">
             <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Médias</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">- Officiels</a>
-                <a class="dropdown-item" href="#">- Guides Vidéos</a>
-                <a class="dropdown-item" href="#">- Capture d'écrans</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-photo-video"></i> &nbsp; Officiels</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-video"></i> &nbsp; Guides Vidéos</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-images"></i> &nbsp; Capture d'écrans</a>
             </div>
         </li>
         <li class="nav-item col-md-12 col-lg-2 last-item">

@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Type;
 use App\Entity\Image;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Content;
 use App\Form\CommentType;
+use App\Repository\TypeRepository;
 use App\Service\PaginationService;
+use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +35,21 @@ class HomeController extends AbstractController
     public function tools()
     {
         return $this->render('home/tools.html.twig');
+    }
+
+    /**
+     * @Route("/cat-article/{name}", name="cat_article")
+     */
+    public function catArticle(Type $type, ArticleRepository $repo, TypeRepository $repoType)
+    {
+        $nameType = ($repoType->findOneById($type->getId()))->getName();
+
+        $articles = $repo->findByType($type->getId());
+
+        return $this->render('home/catArticle.html.twig', [
+            'articles' => $articles,
+            'name' => $nameType
+        ]);
     }
 
     /**
