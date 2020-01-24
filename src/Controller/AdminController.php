@@ -2,11 +2,17 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Type;
 use App\Entity\User;
+use App\Entity\Image;
 use App\Entity\Article;
 use App\Entity\Comment;
+use App\Entity\Content;
 use App\Form\AccountType;
+use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Form\LodestoneType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
 use App\Service\PaginationService;
@@ -16,10 +22,22 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminController extends AbstractController
 {
+    /**
+     * Page du choix d'article
+     *
+     * @Route("/admin/create-type-article", name="admin_create_type_article")
+     * 
+     * @return void
+     */
+    public function createTypeArticle() {
+        return $this->render('admin/createTypeArticle.html.twig');
+    }
+
     /**
      * Permet la création d'un article
      * 
@@ -27,9 +45,186 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function createArticle()
+    public function createArticle(Request $request, EntityManagerInterface $manager)
     {
-        return $this->render('admin/createArticle.html.twig');
+        $article = new Article();
+        
+        $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+           
+            $brochureFile = $form['cover']->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    
+                // Move the file to the directory where brochures are stored
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('covers_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $article->setCover($newFilename);
+            }
+
+            foreach($article->getImages() as $image){
+                $image->setArticle($article);
+                $manager->persist($image);
+            }
+
+            foreach($article->getContents() as $content){
+                $content->setArticle($article);
+                $manager->persist($content);
+            }
+
+            $article->setCreatedAt(new \DateTime('now'));
+            $article->setUser($this->getUser());
+
+            $manager->persist($article);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'article à bien été créer avec succès !"
+            );
+
+            return $this->redirectToRoute('article_show', [
+                'id' => $article->getId(),
+            ]);
+        }
+
+        return $this->render('admin/createArticle.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet la création d'un article Lodestone
+     * 
+     * @Route("/admin/create-lodestone", name="admin_create_lodestone")
+     * 
+     * @return Response
+     */
+    public function createLodestone(Request $request, EntityManagerInterface $manager)
+    {
+        $article = new Article();
+        
+        $form = $this->createForm(LodestoneType::class, $article);
+
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()) {
+           
+            $brochureFile = $form['cover']->getData();
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    
+                // Move the file to the directory where brochures are stored
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('covers_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $article->setCover($newFilename);
+            }
+
+            $article->setCreatedAt(new \DateTime('now'));
+
+            $typeArt = $manager
+            ->getRepository(Type::class)
+            ->findOneByName('Lodestone');
+
+            $article->setType($typeArt);
+            $article->setUser($this->getUser());
+
+            $manager->persist($article);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'article à bien été créer avec succès !"
+            );
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('admin/createLodestone.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet l'édition d'un article lodestone 
+     * 
+     * @Route("/admin/edit-article-lodestone/{id}", name="admin_edit_lodestone")
+     * 
+     * @return Response
+     */
+    public function editLodestone(Request $request, Article $article, EntityManagerInterface $manager) {
+
+        $coverArt = $article->getCover();
+        $form = $this->createForm(LodestoneType::class, $article);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            if($form['cover']->getData() !== $article->getCover()) {
+                $brochureFile = $form['cover']->getData();
+                if ($brochureFile) {
+                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $brochureFile->move(
+                            $this->getParameter('covers_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $article->setCover($newFilename);
+                }
+            } else {
+                $article->setCover('img_article.jpg');
+            }
+                $manager->persist($article);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Les données de l'article ont été modifiée avec succès !"
+                );
+
+                return $this->redirectToRoute('admin_edit_article');
+        }
+
+        return $this->render('admin/editLodestone.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article,
+        ]);
     }
 
     /**
@@ -57,6 +252,9 @@ class AdminController extends AbstractController
      * @return Response
      */
     public function editOneArticle(Article $article) {
+
+        
+
         return $this->render('admin/editOneArticle.html.twig', [
             'article' => $article
         ]);

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition de l'article Lodestone{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+    <div class="block-title">
+        <div class="title-bar"><h1>Edition de l'article &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form.title) }}
+    {{ form_row(form.cover)}}
+    {{ form_row(form.urlExt)}}
+    <button type="submit" class="btn btn-success mt-2 mb-1"><i class="fas fa-check"></i> Valider les modifications</button>
+    {{ form_end(form) }}
+{% endblock %}

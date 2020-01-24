@@ -54,24 +54,25 @@ class AppFixtures extends Fixture
                  
             // Ajout des Types d'article
 
-            $typeArt = new Type();
-            $typeArt->setName('Lodestone');
-            $manager->persist($typeArt);
+            $listeType = ['Lodestone', 'Guide Classe', 'Guide PVE', 'Guide PVP', 'Guide Artisanat', 'Guide Gold Saucer', 'Histoire Univers', 'Histoire Personnages', 'Histoire Divers'];
+            $tabType = array();
 
-            $typeArt2 = new Type();
-            $typeArt2->setName('Guide');
-            $manager->persist($typeArt2);
+            for ($countArt=0; $countArt < 9; $countArt++) { 
+                $typeArt = new Type();
+                $typeArt->setName($listeType[$countArt]);
+                $manager->persist($typeArt);
+                $tabType[$countArt] = $typeArt;
+            }
 
             // Ajout de faux Articles
 
-            $repoType = [$typeArt, $typeArt2];
-
-            for ($i=0; $i < 10; $i++) { 
+            for ($i=0; $i < 15; $i++) { 
                 
                 $newArticle = new Article();
 
-                $typeTmp =  $repoType[mt_rand(0, 1)];
-                if($typeTmp->getName() == 'Lodestone') {
+                $tmpType = ($tabType[mt_rand(0, 8)]);
+
+                if($tmpType->getName() == 'Lodestone') {
                     $urlExt = $faker->url() ;
                 }
                 else {
@@ -81,7 +82,7 @@ class AppFixtures extends Fixture
                 $newArticle->setTitle($faker->sentence())
                            ->setCover('img_article.jpg')
                            ->setCreatedAt($faker->dateTimeBetween('-6 months'))
-                           ->setType($typeTmp)
+                           ->setType($tmpType)
                            ->setUrlExt($urlExt)
                            ->setUser($adminUser);
 

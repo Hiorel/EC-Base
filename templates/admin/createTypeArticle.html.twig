@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisir son type d'article{% endblock %}
+
+{% block body %}
+    <div class="block-title">
+        <div class="title-bar"><h1>Type d'article &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    <div class="row">
+        <div class="col-lg-6 text-center mt-3">
+            <a href="{{ path('admin_create_lodestone') }}"><img class="img-fluid" src="{{asset('build/images/choix_lodestone.png')}}" alt="Lodestone"></a>
+        </div>
+        <div class="col-lg-6 text-center mt-3">
+            <a href="{{ path('admin_create_article') }}"><img class="img-fluid" src="{{asset('build/images/choix_article.png')}}" alt="Lodestone"></a>
+        </div>
+    </div>
+{% endblock %}

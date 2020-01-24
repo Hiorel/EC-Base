@@ -13,19 +13,19 @@
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-    <div class="d-block text-center">
+    <div class="d-block text-center mb-5">
         {% for i in 1..totalContent %}
             {% for image in images %}
                 {% if i == image.orderArt %}
                     <figure class="figure center-block">
-                        <img src="{{image.url}}" class="figure-img img-fluid img-article" alt="{{image.caption}}">
+                        <a href="{{image.url}}" target="_blank"><img src="{{image.url}}" class="figure-img img-fluid img-article" alt="{{image.caption}}"></a>
                         <figcaption class="figure-caption text-center cap-img-article font-italic">{{image.caption}}</figcaption>
                     </figure>
                 {% endif %}
             {% endfor %}
             {% for content in contents %}
                 {% if i == content.orderArt %}
-                    <p>{{content.contentArt}}</p>
+                    <div class="text-left">{{content.contentArt|raw}}</div>
                 {% endif %}
             {% endfor %}
         {% endfor %}
@@ -39,12 +39,12 @@
         <table class="table table-hover table-striped table-responsive">
             {% if app.user %}
                 <tr>
-                    <td class="text-center">
+                    <td class="text-center tab-avatar">
                             <img src="/uploads/avatar/{{app.user.avatar}}" alt="Avatar de {{app.user.name}}" class="avatar"><br>
                             <span class="font-weight-bold">{{app.user.name}}</span><br>
                             <span class="badge badge-dark">{{app.user.comments|length}} messages</span>
-                        </td>
-                    <td>
+                    </td>
+                    <td class="position-relative block-comment">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}
                         <button type="submit" class="btn btn-primary mt-2 mb-1"><i class="fas fa-check"></i> Publier le commentaire</button>
@@ -53,11 +53,11 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td class="text-center">
+                    <td class="text-center tab-avatar">
                         <img src="/uploads/avatar/no_avatar.png" alt="Avatar de visiteur" class="avatar"><br>
                         <span class="font-weight-bold">Visiteur</span>
                     </td>
-                    <td class="font-weight-bold text-center">
+                    <td class="font-weight-bold text-center position-relative block-comment">
                         <span class="d-block mt-2 mb-0 h3">Vous devez vous connecter pour pouvoir publier un commentaire !</span><br>
                         <a href="{{ path('account_login') }}" class="btn btn-primary">Se connecter</a>
                         <a href="{{ path('account_register') }}" class="btn btn-danger">S'inscrire</a>
