@@ -251,11 +251,61 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editOneArticle(Article $article) {
-
+    public function editOneArticle(Request $request, Article $article, EntityManagerInterface $manager) {
         
+        $coverArt = $article->getCover();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            if($form['cover']->getData() !== $article->getCover()) {
+                $brochureFile = $form['cover']->getData();
+                if ($brochureFile) {
+                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $brochureFile->move(
+                            $this->getParameter('covers_directory'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $article->setCover($newFilename);
+                }
+            } else {
+                $article->setCover('img_article.jpg');
+            }
+
+            foreach($article->getImages() as $image){
+                $image->setArticle($article);
+                $manager->persist($image);
+            }
+
+            foreach($article->getContents() as $content){
+                $content->setArticle($article);
+                $manager->persist($content);
+            }
+
+                $manager->persist($article);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "Les données de l'article <strong>{$article->getTitle()}</strong> ont été modifiée avec succès !"
+                );
+
+                return $this->redirectToRoute('admin_edit_article');
+        }
 
         return $this->render('admin/editOneArticle.html.twig', [
+            'form' => $form->createView(),
             'article' => $article
         ]);
     }

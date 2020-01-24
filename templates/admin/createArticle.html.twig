@@ -2,7 +2,7 @@
 
 {% block title %}Création d'un article{% endblock %}
 
-{% form_theme form _self %}
+{% form_theme form 'admin/_collection.html.twig' %}
 
 {% block body %}
     <div class="block-title">
@@ -11,9 +11,9 @@
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
     {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.cover)}}
     {{ form_row(form.type)}}
+    {{ form_row(form.title)}}
+    {{ form_row(form.cover)}}
     {{ form_row(form.images, {'label':false }) }}
     {{ form_row(form.contents, {'label': false }) }}
     <div class="row">
@@ -26,122 +26,5 @@
     </div>
     <button type="submit" class="btn btn-success mt-2 mb-1"><i class="fas fa-check"></i> Valider l'article</button>
     {{ form_end(form) }}
-{% endblock %}
-
-{% block _article_images_widget %}
-    {{ form_widget(form) }}
-
-    <input type="hidden" id="widgets-counter-image" value="0">
-
-{% endblock %}
-
-{% block _article_images_entry_row %}
-    {{ form_widget(form) }}
-{% endblock %}
-
-{% block _article_images_entry_widget %}
-    <div class="form-group bg-light pt-2 pb-2" id="blockImage_{{id}}">
-        <div class="row">
-            <div class="col-1 type-btn">
-                <div class="btn btn-light"><i class="fas fa-image"></i></div>
-            </div>
-            <div class="col-10 ligne-btn">
-                <div class="d-flex">
-                    <div class="col-2 type-order">
-                        {{ form_widget(form.orderArt) }}
-                    </div>
-                    <div class="col-5">
-                        {{ form_widget(form.url) }}
-                    </div>
-                    <div class="col-5">
-                        {{ form_widget(form.caption) }}
-                    </div>
-                 </div>
-            </div>
-            <div class="col-1 type-btn">
-                <button type="button" data-action="delete" data-target="#blockImage_{{id}}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block _article_contents_widget %}
-    {{ form_widget(form) }}
-
-    <input type="hidden" id="widgets-counter-content" value="0">
-{% endblock %}
-
-{% block _article_contents_entry_row %}
-    {{ form_widget(form) }}
-{% endblock %}
-
-{% block _article_contents_entry_widget %}
-    <div class="form-group bg-light pt-2 pb-2" id="blockContent_{{id}}">
-        <div class="row">
-             <div class="col-1 type-btn">
-                <div class="btn btn-light"><i class="fas fa-align-center"></i></div>
-            </div>
-            <div class="col-10 ligne-btn">
-                <div class="d-flex">
-                    <div class="col-2 type-order">
-                        {{ form_widget(form.orderArt) }}
-                    </div>
-                    <div class="col-10">
-                        {{ form_widget(form.contentArt) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-1 type-btn">
-                <button type="button" data-action="delete" data-target="#blockContent_{{id}}" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-
-<script>
-
-    $('#add-image').click(function(){
-        // Je récupère le numéro des futures champs que je vais créer
-        const index = +$('#widgets-counter-image').val();
-
-        // Je récupère le prorotype des entrées
-        const tmpl = $('#article_images').data('prototype').replace(/__name__/g, index);
-
-        // J'injecte au sain de la div
-        $('#article_images').append(tmpl);
-
-        $('#widgets-counter-image').val(index + 1);
-        
-        // Je gère le boutton supprimer
-        handleDeleteButtons();
-    });
-
-     $('#add-content').click(function(){
-        // Je récupère le numéro des futures champs que je vais créer
-        const index = +$('#widgets-counter-content').val();
-
-        // Je récupère le prorotype des entrées
-        const tmpl = $('#article_contents').data('prototype').replace(/__name__/g, index);
-
-        // J'injecte au sain de la div
-        $('#article_contents').append(tmpl);
-
-        $('#widgets-counter-content').val(index + 1);
-
-        // Je gère le boutton supprimer
-        handleDeleteButtons();
-    });
-
-    function handleDeleteButtons() {
-        $('button[data-action="delete"]').click(function() {
-            const target = this.dataset.target;
-            $(target).remove();
-        });
-    }
-
-    handleDeleteButtons();
-</script>
-
+    {{ encore_entry_script_tags('jsArticle') }}
 {% endblock %}

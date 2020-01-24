@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Form\ImageType;
 use App\Form\ContentType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
@@ -38,9 +39,25 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, $this->getConfiguration("Nom de l'article", "Titre de l'article..."))
+            ->add('type', EntityType::class, [
+                'class' => Type::class,
+                'choice_label' => "name"
+            ])
+            ->add('images', CollectionType::class,
+            [
+                'entry_type' => ImageType::class,
+                'allow_add' => true,
+                'allow_delete' => true
+            ])
+            ->add('contents', CollectionType::class,
+            [
+                'entry_type' => ContentType::class,
+                'allow_add' => true,
+                'allow_delete' => true
+            ])
             ->add('cover', FileType::class, [
                 'label' => 'Couverture (Format PNG ou JPG (Poids 5 Mo maximum))',
-                'required' => true,
+                'required' => false,
                 'attr' => ['placeholder' => "Aucun fichier",
               'class' => 'form-control mb-3',
           ],
@@ -57,21 +74,15 @@ class ArticleType extends AbstractType
                         'mimeTypesMessage' => 'Veuillez insérer un format d\'image correcte',
                         ])
                     ],
-              ])
-            ->add('type', EntityType::class, [
-                'class' => Type::class,
-                'choice_label' => "name"
-            ])
-            ->add('images', CollectionType::class,
-            [
-                'entry_type' => ImageType::class,
-                'allow_add' => true
-            ])
-            ->add('contents', CollectionType::class,
-            [
-                'entry_type' => ContentType::class,
-                'allow_add' => true
-            ]);
+              ])          
+            ->get('cover')->addModelTransformer(new CallBackTransformer(
+                function($cover) {
+                    return null;
+                },
+                function($cover) {
+                    return $cover;
+                }
+            ));
      }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -2,11 +2,29 @@
 
 {% block title %}Edition de l'article numéro {{ article.id }} {% endblock %}
 
+{% form_theme form 'admin/_collection.html.twig' %}
+
 {% block body %}
     <div class="block-title">
         <div class="title-bar"><h1>édition de l'article {{ article.id }} &nbsp;</h1></div>
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-   
+   {{ form_start(form) }}
+    {{ form_row(form.type)}}
+    {{ form_row(form.title)}}
+    {{ form_row(form.cover)}}
+    {{ form_row(form.images, {'label':false }) }}
+    {{ form_row(form.contents, {'label': false }) }}
+    <div class="row">
+        <div class="form-group col">
+            <button type="button" id="add-image" class="btn block_ajout"><i class="fas fa-images"></i></button>
+        </div>
+        <div class="form-group col">
+            <button type="button" id="add-content" class="btn block_ajout"><i class="fas fa-align-center"></i></button>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success mt-2 mb-1"><i class="fas fa-check"></i> Valider les modifications</button>
+    {{ form_end(form) }}
+    {{ encore_entry_script_tags('jsArticle') }}
 {% endblock %}
