@@ -27,6 +27,14 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/tools", name="tools")
+     */
+    public function tools()
+    {
+        return $this->render('home/tools.html.twig');
+    }
+
+    /**
     * Permet d'afficher un article
     *
     * @Route("/article/{id}/{page<\d+>?1}", name="article_show")
