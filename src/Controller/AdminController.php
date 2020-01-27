@@ -16,6 +16,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Entity\Screenshots;
 use App\Form\LodestoneType;
+use App\Service\FileService;
 use App\Form\ScreenshotsType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
@@ -49,7 +50,7 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function createArticle(Request $request, EntityManagerInterface $manager)
+    public function createArticle(Request $request, EntityManagerInterface $manager, FileService $fileServ)
     {
         $article = new Article();
         
@@ -59,25 +60,17 @@ class AdminController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()) {
            
-            $brochureFile = $form['cover']->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    
-                // Move the file to the directory where brochures are stored
+            $file = $form['cover']->getData();
+            if ($file) {
+                $newFilename = $fileServ->fileManagement($file); 
+                
                 try {
-                    $brochureFile->move(
+                    $file->move(
                         $this->getParameter('covers_directory'),
                         $newFilename
                     );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                } catch (FileException $e) {}
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
                 $article->setCover($newFilename);
             }
 
@@ -119,7 +112,7 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function createLodestone(Request $request, EntityManagerInterface $manager)
+    public function createLodestone(Request $request, EntityManagerInterface $manager, FileService $fileServ)
     {
         $article = new Article();
         
@@ -129,25 +122,16 @@ class AdminController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()) {
            
-            $brochureFile = $form['cover']->getData();
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    
-                // Move the file to the directory where brochures are stored
+            $file = $form['cover']->getData();
+            if ($file) {
+                $newFilename = $fileServ->fileManagement($file);
                 try {
-                    $brochureFile->move(
+                    $file->move(
                         $this->getParameter('covers_directory'),
                         $newFilename
                     );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                } catch (FileException $e) {}
 
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
                 $article->setCover($newFilename);
             }
 
@@ -183,7 +167,7 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editLodestone(Request $request, Article $article, EntityManagerInterface $manager) {
+    public function editLodestone(Request $request, Article $article, EntityManagerInterface $manager, FileService $fileServ) {
 
         $coverArt = $article->getCover();
         $form = $this->createForm(LodestoneType::class, $article);
@@ -191,28 +175,19 @@ class AdminController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             if($form['cover']->getData() !== $article->getCover()) {
-                $brochureFile = $form['cover']->getData();
-                if ($brochureFile) {
-                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    // Move the file to the directory where brochures are stored
+                $file = $form['cover']->getData();
+                if ($file) {
+                    $newFilename = $fileServ->fileManagement($file);
                     try {
-                        $brochureFile->move(
+                        $file->move(
                             $this->getParameter('covers_directory'),
                             $newFilename
                         );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
+                    } catch (FileException $e) {}
 
-                    // updates the 'brochureFilename' property to store the PDF file name
-                    // instead of its contents
                     $article->setCover($newFilename);
                 }
-            } else {
-                $article->setCover('img_article.jpg');
+            } else {$article->setCover($coverArt);
             }
                 $manager->persist($article);
                 $manager->flush();
@@ -255,7 +230,7 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editOneArticle(Request $request, Article $article, EntityManagerInterface $manager) {
+    public function editOneArticle(Request $request, Article $article, EntityManagerInterface $manager, FileService $fileServ) {
         
         $coverArt = $article->getCover();
         $form = $this->createForm(ArticleType::class, $article);
@@ -263,29 +238,19 @@ class AdminController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             if($form['cover']->getData() !== $article->getCover()) {
-                $brochureFile = $form['cover']->getData();
-                if ($brochureFile) {
-                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    // Move the file to the directory where brochures are stored
+                $file = $form['cover']->getData();
+                if ($file) {
+                    $newFilename = $fileServ->fileManagement($file);
                     try {
-                        $brochureFile->move(
+                        $file->move(
                             $this->getParameter('covers_directory'),
                             $newFilename
                         );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
+                    } catch (FileException $e) {}
 
-                    // updates the 'brochureFilename' property to store the PDF file name
-                    // instead of its contents
                     $article->setCover($newFilename);
                 }
-            } else {
-                $article->setCover($coverArt);
-            }
+            } else {$article->setCover($coverArt);}
 
             foreach($article->getImages() as $image){
                 $image->setArticle($article);
@@ -357,7 +322,7 @@ class AdminController extends AbstractController
      * 
      * @return Response
      */
-    public function editOneUser(Request $request, EntityManagerInterface $manager,User $user, $page, PaginationService $pagination) {
+    public function editOneUser(Request $request, EntityManagerInterface $manager,User $user, $page, PaginationService $pagination, FileService $fileServ) {
         $pagination->setEntityClass(Comment::class)
                    ->setPage($page)
                    ->setTemplatePath('partials/paginationAlt.html.twig')
@@ -370,30 +335,19 @@ class AdminController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()) {
             if($form['avatar']->getData() !== $user->getAvatar()) {
-                $brochureFile = $form['avatar']->getData();
-                if ($brochureFile) {
-                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    // Move the file to the directory where brochures are stored
+                $file = $form['avatar']->getData();
+                if ($file) {
+                    $newFilename = $fileServ->fileManagement($file);
                     try {
-                        $brochureFile->move(
+                        $file->move(
                             $this->getParameter('avatar_directory'),
                             $newFilename
                         );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
+                    } catch (FileException $e) {}
 
-                    // updates the 'brochureFilename' property to store the PDF file name
-                    // instead of its contents
                     $user->setAvatar($newFilename);
                 }
-            } else {
-                
-                $user->setAvatar($avatarUser);
-            }
+            } else {$user->setAvatar($avatarUser);}
                 
             $manager->persist($user);
             $manager->flush();
@@ -430,7 +384,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_user_management');
     }
 
-        /**
+    /**
      * Supprimer le commentaire en variable
      * 
      * @Route("/admin/remove-comment/{id}/{idUser}", name="admin_remove_comment")
@@ -450,7 +404,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_edit_one_user', array('id' => $idUser));
     }
 
-            /**
+     /**
      * Supprimer le commentaire en variable
      * 
      * @Route("/admin/remove-comment/{id}/{idArticle}", name="admin_remove_comment_art")
@@ -498,7 +452,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-      /**
+    /**
      * Permet de modifier le mot de passe
      *
      * @Route("/admin/password-update/{id}", name="admin_edit_password")
@@ -563,7 +517,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * Page d'ajout de vidéos
+     * Page d'édition de vidéos
      *
      * @Route("/admin/edit-videos/{id}", name="admin_edit_one_video")
      * 
@@ -640,8 +594,8 @@ class AdminController extends AbstractController
         ]);
     }
 
-        /**
-     * Page d'ajout des screens
+    /**
+     * Page d'édition des screens
      *
      * @Route("/admin/edit-screen/{id}", name="admin_edit_one_screen")
      * 

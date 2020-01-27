@@ -22,7 +22,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     /**
+     * Renvoie la page d'accueil du site
+     * 
      * @Route("/{page<\d+>?1}", name="home")
+     * 
+     * @return Response
      */
     public function index( $page, PaginationService $pagination)
     {
@@ -36,7 +40,11 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Renvoie la page des outils
+     * 
      * @Route("/tools", name="tools")
+     * 
+     * @return Response
      */
     public function tools()
     {
@@ -44,7 +52,11 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Retourne la page des guides vidéos
+     * 
      * @Route("/videos/{page<\d+>?1}", name="cat_videos")
+     * 
+     * @return Response
      */
     public function videos($page, PaginationService $pagination)
     {
@@ -58,7 +70,11 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Retourne la page des screenshots
+     * 
      * @Route("/screenshots/{page<\d+>?1}", name="cat_screens")
+     * 
+     * @return Response
      */
     public function screens($page, PaginationService $pagination)
     {
@@ -72,7 +88,11 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Retourne les différentes page de guide selon leur catégorie
+     * 
      * @Route("/cat-article/{name}/{page<\d+>?1}", name="cat_article")
+     * 
+     * @return Response
      */
     public function catArticle(Type $type, ArticleRepository $repo, TypeRepository $repoType, $page, PaginationService $pagination)
     {
@@ -96,7 +116,7 @@ class HomeController extends AbstractController
     *
     * @Route("/article/{id}/{page<\d+>?1}", name="article_show")
     * 
-    * @return void
+    * @return Response
     */
     public function showArticle(Request $request, EntityManagerInterface $manager, Article $article, $page, PaginationService $pagination) {
         if($article->getType()->getName() == "Lodestone")

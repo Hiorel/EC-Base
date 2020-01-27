@@ -13,8 +13,8 @@
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-<div class="row">
-    {% for video in pagination.getData5() %}
+    <div class="row">
+        {% for video in pagination.getData5() %}
             <div class="col-lg-6">
                 <div class="video-cat mb-5">
                     <iframe src="{{video.url|raw}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

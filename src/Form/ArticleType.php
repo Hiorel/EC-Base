@@ -6,6 +6,7 @@ use App\Entity\Type;
 use App\Entity\Article;
 use App\Form\ImageType;
 use App\Form\ContentType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,24 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ArticleType extends AbstractType
+class ArticleType extends ApplicationType
 {
-        /**
-     * Permet d'avoir la configuration de base d'un champ
-     *
-     * @param string $label
-     * @param string $placeholder
-     * @return array
-     */
-    private function getConfiguration($label, $placeholder, $options = []) {
-        return array_merge([
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder,
-                'class' => 'form-control mb-3'
-             ]
-         ], $options);
-    }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

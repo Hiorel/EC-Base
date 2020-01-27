@@ -7,6 +7,7 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\AccountType;
 use App\Form\CommentType;
+use App\Service\FileService;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
@@ -14,9 +15,9 @@ use Symfony\Component\Form\FormError;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -30,13 +31,9 @@ class AccountController extends AbstractController
      * 
      * @Route("/login", name="account_login")
      * 
-     * 
      * @return Response
      */
     public function login(AuthenticationUtils $utils)    {
-        /*if(!($this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'))){
-            return $this->redirectToRoute('account_profile');
-        }*/
 
         $error = $utils->getLastAuthenticationError();
         $username = $utils->getLastUsername();
@@ -54,9 +51,7 @@ class AccountController extends AbstractController
      * 
      * @return void
      */
-    public function logout() {
-
-    }
+    public function logout() {}
 
     /**
      * Permet d'afficher le formulaire d'inscription
@@ -75,16 +70,16 @@ class AccountController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             
             if($form['avatar']->getData()) {
-                $brochureFile = $form['avatar']->getData();
-                if ($brochureFile) {
-                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $file = $form['avatar']->getData();
+                if ($file) {
+                    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                     // this is needed to safely include the file name as part of the URL
                     $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
                     
                     // Move the file to the directory where brochures are stored
                     try {
-                        $brochureFile->move(
+                        $file->move(
                             $this->getParameter('avatar_directory'),
                             $newFilename
                         );
@@ -125,7 +120,7 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function profile(Request $request, EntityManagerInterface $manager) {
+    public function profile(Request $request, EntityManagerInterface $manager, FileService $fileServ) {
         $user = $this->getUser();
         $avatarUser = $this->getUser()->getAvatar();
         $form = $this->createForm(AccountType::class, $user);
@@ -134,30 +129,19 @@ class AccountController extends AbstractController
         
         if($form->isSubmitted() && $form->isValid()) {
             if($form['avatar']->getData() !== $user->getAvatar()) {
-                $brochureFile = $form['avatar']->getData();
-                if ($brochureFile) {
-                    $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-                    // Move the file to the directory where brochures are stored
+                $file = $form['avatar']->getData();
+                if ($file) {
+                    $newFilename = $fileServ->fileManagement($file);
                     try {
-                        $brochureFile->move(
+                        $file->move(
                             $this->getParameter('avatar_directory'),
                             $newFilename
                         );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
+                    } catch (FileException $e) {}
 
-                    // updates the 'brochureFilename' property to store the PDF file name
-                    // instead of its contents
                     $user->setAvatar($newFilename);
                 }
-            } else {
-                
-                $user->setAvatar($avatarUser);
-            }
+            } else {$user->setAvatar($avatarUser);}
                 
             $manager->persist($user);
             $manager->flush();
