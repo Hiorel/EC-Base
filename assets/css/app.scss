@@ -5,7 +5,7 @@
 /* Variables de couleurs */
 
 $color-primary-1:#323232;
-$color-primary-2:#f85656;
+$color-primary-2:#7e2d6cf6;
 
 $color-secondary-1:#414042;
 $color-secondary-2:white;
@@ -295,7 +295,6 @@ header{
         }
 
         li::first-letter{
-            color: $color-primary-2;
             font-size:1.2em;
             font-weight:bold;
         }
@@ -320,7 +319,7 @@ header{
         }
 
         .logout-color{
-            color: $color-primary-2;
+            color: red;
         }
 
         .dropdown-item:hover{background-color: $color-secondary-1;}

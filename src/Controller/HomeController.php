@@ -42,6 +42,22 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/videos", name="cat_videos")
+     */
+    public function videos()
+    {
+        return $this->render('home/videos.html.twig');
+    }
+
+    /**
+     * @Route("/screenshots", name="cat_screens")
+     */
+    public function screens()
+    {
+        return $this->render('home/screens.html.twig');
+    }
+
+    /**
      * @Route("/cat-article/{name}/{page<\d+>?1}", name="cat_article")
      */
     public function catArticle(Type $type, ArticleRepository $repo, TypeRepository $repoType, $page, PaginationService $pagination)

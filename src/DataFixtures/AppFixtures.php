@@ -54,10 +54,10 @@ class AppFixtures extends Fixture
                  
             // Ajout des Types d'article
 
-            $listeType = ['Lodestone', 'Guide Classe', 'Guide PVE', 'Guide PVP', 'Guide Artisanat', 'Guide Gold Saucer', 'Histoire Univers', 'Histoire Personnages', 'Histoire Divers'];
+            $listeType = ['Lodestone', 'Guide Classe', 'Guide PVE', 'Guide PVP', 'Guide Artisanat', 'Guide Gold Saucer', 'Histoire Univers', 'Histoire Personnages', 'Histoire Autres','Actu'];
             $tabType = array();
 
-            for ($countArt=0; $countArt < 9; $countArt++) { 
+            for ($countArt=0; $countArt < 10; $countArt++) { 
                 $typeArt = new Type();
                 $typeArt->setName($listeType[$countArt]);
                 $manager->persist($typeArt);
@@ -70,7 +70,7 @@ class AppFixtures extends Fixture
                 
                 $newArticle = new Article();
 
-                $tmpType = ($tabType[mt_rand(0, 8)]);
+                $tmpType = ($tabType[mt_rand(0, 9)]);
 
                 if($tmpType->getName() == 'Lodestone') {
                     $urlExt = $faker->url() ;
