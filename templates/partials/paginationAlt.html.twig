@@ -1,4 +1,5 @@
 <div class="d-flex justify-content-center">
+    {% if pages > 1 %}
     <ul class="pagination">
         <li class="page-item {% if page == 1 %}disabled{% endif %}">
             <a class="page-link" href="{{ path(route, {'id': idUser, 'page': page - 1})  }}#anchorComm">&laquo;</a>
@@ -14,4 +15,5 @@
             <a class="page-link" href="{{ path(route, {'id': idUser, 'page': page + 1}) }}#anchorComm">&raquo;</a>
          </li>
     </ul>
+    {% endif %}
 </div>

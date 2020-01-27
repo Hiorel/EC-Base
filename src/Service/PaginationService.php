@@ -197,6 +197,14 @@ class PaginationService {
         ]);
     }
 
+    public function display5() {
+        $this->twig->display($this->templatePath, [
+            'page' => $this->currentPage,
+            'pages' => $this->getPages(),
+            'route' => $this->route
+        ]);
+    }
+
     /**
      * Permet de récupérer le nombre de pages qui existent sur une entité particulière
      * 
@@ -384,6 +392,31 @@ class PaginationService {
         return $this->manager
                         ->getRepository($this->entityClass)
                         ->findBy(array('type' => $this->idType), array('createdAt' => 'desc'), $this->limit, $offset);
+    }
+
+        /**
+     * Permet de récupérer les données paginées pour une entité spécifique
+     * 
+     * Elle se sert de Doctrine afin de récupérer le repository pour l'entité spécifiée
+     * puis grâce au repository et à sa fonction findBy() on récupère les données dans une 
+     * certaine limite et en partant d'un offset
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas définie
+     *
+     * @return array
+     */
+    public function getData5() {
+        if(empty($this->entityClass)) {
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+        // 1) Calculer l'offset
+        $offset = $this->currentPage * $this->limit - $this->limit;
+
+        // 2) Demander au repository de trouver les éléments à partir d'un offset et 
+        // dans la limite d'éléments imposée (voir propriété $limit)
+        return $this->manager
+                        ->getRepository($this->entityClass)
+                        ->findBy([], [], $this->limit, $offset);
     }
 
     /**

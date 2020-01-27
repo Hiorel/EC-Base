@@ -24,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in pagination.data %}
+            {% for user in pagination.getData5() %}
                 <tr class="text-center">
                     <td>{{user.id}}</td>
                     <td class="cover-td"><img src="/uploads/avatar/{{user.avatar}}" alt="Avatar" class="avatar"></td>
@@ -45,5 +45,5 @@
             {% endfor %}
         </tbody>
     </table>
-    {{ pagination.display() }}
+    {{ pagination.display5() }}
 {% endblock %}

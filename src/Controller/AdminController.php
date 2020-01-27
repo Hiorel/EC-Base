@@ -280,7 +280,7 @@ class AdminController extends AbstractController
                     $article->setCover($newFilename);
                 }
             } else {
-                $article->setCover('img_article.jpg');
+                $article->setCover($coverArt);
             }
 
             foreach($article->getImages() as $image){
