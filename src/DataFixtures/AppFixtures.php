@@ -7,9 +7,11 @@ use App\Entity\Role;
 use App\Entity\Type;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Videos;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Content;
+use App\Entity\Screenshots;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -123,6 +125,22 @@ class AppFixtures extends Fixture
                 }
                 $manager->persist($newArticle);
             }
+
+        for ($i=0; $i < 20; $i++) { 
+                $video = new Videos();
+                
+                $video->setUrl('https://www.youtube.com/embed/OKMZ2vmjr4Q')
+                      ->setName($faker->sentence());
+    
+                $manager->persist($video);
+
+                $screen = new Screenshots();
+                $screen->setUrl('http://placekitten.com/600/350')
+                       ->setCaption($faker->sentence());
+    
+                $manager->persist($screen);
+        }   
+
          $manager->flush();
     }
 }

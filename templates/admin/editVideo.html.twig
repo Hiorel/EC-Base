@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'une vidéo{% endblock %}
+
+{% block body %}
+    <div class="block-title">
+        <div class="title-bar"><h1>édition d'une vidéo &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    {{ form_start(form) }}
+    {{ form_row(form.url) }}
+    {{ form_row(form.name)}}
+    <button type="submit" class="btn btn-success mt-2 mb-1"><i class="fas fa-check"></i> Valider la modification</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -6,13 +6,17 @@ use DateTime;
 use App\Entity\Type;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Videos;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Content;
+use App\Form\VideosType;
 use App\Form\AccountType;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use App\Entity\Screenshots;
 use App\Form\LodestoneType;
+use App\Form\ScreenshotsType;
 use App\Entity\PasswordUpdate;
 use App\Form\PasswordUpdateType;
 use App\Service\PaginationService;
@@ -527,5 +531,161 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'user' => $user
         ]);
+    }
+
+    /**
+     * Page d'ajout de vidéos
+     *
+     * @Route("/admin/add-videos", name="admin_add_video")
+     * 
+     * @return Response
+     */
+    public function addVideos(Request $request, EntityManagerInterface $manager) {
+        $video = new Videos();
+        
+        $form = $this->createForm(VideosType::class, $video);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($video);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre vidéo a bien été ajouté !'
+            );
+            return $this->redirectToRoute('cat_videos');
+        }
+
+        return $this->render('admin/addVideo.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Page d'ajout de vidéos
+     *
+     * @Route("/admin/edit-videos/{id}", name="admin_edit_one_video")
+     * 
+     * @return Response
+     */
+    public function editVideos(Request $request, EntityManagerInterface $manager, Videos $video) {
+        
+        $form = $this->createForm(VideosType::class, $video);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($video);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre vidéo a bien été modifié !'
+            );
+            return $this->redirectToRoute('cat_videos');
+        }
+
+        return $this->render('admin/EditVideo.html.twig', [
+            'form' => $form->createView(),
+            'video' => $video
+        ]);
+    }
+
+    /**
+     * Supprimer la vidéo
+     * 
+     * @Route("/admin/remove-video/{id}", name="admin_remove_video")
+     *
+     * @return Response
+     */
+    public function removeVideo(EntityManagerInterface $manager, Videos $video) {
+
+        $manager->remove($video);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "La vidéo a bien été supprimé"
+        );
+
+        return $this->redirectToRoute('cat_videos');
+    }
+
+    /**
+     * Page d'ajout des screens
+     *
+     * @Route("/admin/add-screen", name="admin_add_screen")
+     * 
+     * @return Response
+     */
+    public function addScreens(Request $request, EntityManagerInterface $manager) {
+        $screen = new Screenshots();
+        
+        $form = $this->createForm(ScreenshotsType::class, $screen);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($screen);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre screenshot a bien été ajouté !'
+            );
+            return $this->redirectToRoute('cat_screens');
+        }
+
+        return $this->render('admin/addScreen.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+        /**
+     * Page d'ajout des screens
+     *
+     * @Route("/admin/edit-screen/{id}", name="admin_edit_one_screen")
+     * 
+     * @return Response
+     */
+    public function editScreens(Request $request, EntityManagerInterface $manager, Screenshots $screen) {
+
+        $form = $this->createForm(ScreenshotsType::class, $screen);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($screen);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre screenshot a bien été modifié !'
+            );
+            return $this->redirectToRoute('cat_screens');
+        }
+
+        return $this->render('admin/editScreen.html.twig', [
+            'form' => $form->createView(),
+            'screen' => $screen
+        ]);
+    }
+
+     /**
+     * Supprimer le screen
+     * 
+     * @Route("/admin/remove-screen/{id}", name="admin_remove_screen")
+     *
+     * @return Response
+     */
+    public function removeScreen(EntityManagerInterface $manager, Screenshots $screen) {
+
+        $manager->remove($screen);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "Le screenshot a bien été supprimé"
+        );
+
+        return $this->redirectToRoute('cat_screens');
     }
 }

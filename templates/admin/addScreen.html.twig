@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'une capture d'écran{% endblock %}
+
+{% block body %}
+    <div class="block-title">
+        <div class="title-bar"><h1>Ajout d'une capture d'écran &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    {{ form_start(form) }}
+    {{ form_row(form.url) }}
+    {{ form_row(form.caption)}}
+    <button type="submit" class="btn btn-success mt-2 mb-1"><i class="fas fa-check"></i> Valider le screen</button>
+    {{ form_end(form) }}
+{% endblock %}

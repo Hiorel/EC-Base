@@ -5,10 +5,12 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Type;
 use App\Entity\Image;
+use App\Entity\Videos;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Content;
 use App\Form\CommentType;
+use App\Entity\Screenshots;
 use App\Repository\TypeRepository;
 use App\Service\PaginationService;
 use App\Repository\ArticleRepository;
@@ -42,19 +44,31 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/videos", name="cat_videos")
+     * @Route("/videos/{page<\d+>?1}", name="cat_videos")
      */
-    public function videos()
+    public function videos($page, PaginationService $pagination)
     {
-        return $this->render('home/videos.html.twig');
+        $pagination->setEntityClass(Videos::class)
+        ->setLimit(8)
+        ->setPage($page);
+
+        return $this->render('home/videos.html.twig', [
+            'pagination' => $pagination
+        ]);
     }
 
     /**
-     * @Route("/screenshots", name="cat_screens")
+     * @Route("/screenshots/{page<\d+>?1}", name="cat_screens")
      */
-    public function screens()
+    public function screens($page, PaginationService $pagination)
     {
-        return $this->render('home/screens.html.twig');
+        $pagination->setEntityClass(Screenshots::class)
+        ->setLimit(8)
+        ->setPage($page);
+
+        return $this->render('home/screens.html.twig', [
+            'pagination' => $pagination
+            ]);
     }
 
     /**
