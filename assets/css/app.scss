@@ -27,6 +27,14 @@ body{
     color:$color-primary-2;
 }
 
+.date-article {
+    position:absolute;
+    bottom:5px;
+    right:15px;
+    color: rgba(0,0,0,0.2);
+    font-size:12px;
+}
+
 .block-comment {
     padding-bottom:40px !important;
     text-align:justify;
@@ -55,6 +63,7 @@ body{
     padding-bottom:7px;
     padding-left:2px;
     padding-right:2px;
+    max-width:400px;
 }
 
 .block_ajout {
@@ -104,6 +113,46 @@ input{
     max-width:50px;
 }
 
+.cover-block{
+    width:100%;
+    height:150px;
+}
+
+.block-article{
+    width:100%;
+    min-height:250px;
+    padding-bottom: 40px !important;
+    box-shadow: 0 0 5px rgba(0,0,0, 0.3);
+    color:$color-primary-1;
+    transition: all 500ms ease-in;
+    transform: scale(1);
+}
+
+.block-article:hover{
+    background-color:grey;
+    transition: all 500ms ease-in;
+    transform: scale(1.05);
+}
+
+.block-article a{
+    text-decoration: none;
+}
+
+.type-article {
+    background-color: $color-primary-2;
+    color: $color-secondary-2;
+    width:100%;
+    padding:5px;
+    text-transform:uppercase;
+    text-align:center;
+    font-weight:600;
+}
+
+.title-article {
+    padding:5px;
+    color:$color-primary-1;
+}
+
 .type-order{
     max-width:100px;
     min-width:50px;
@@ -121,8 +170,6 @@ input{
     background-color:$color-primary-2;
     color:$color-secondary-2;
 }
-
-
 
 .edit-comment {
     font-size: 90%;

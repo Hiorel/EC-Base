@@ -3,7 +3,24 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores maxime, nam ad cum inventore vero quas quaerat enim? Aliquid dolorum sed saepe soluta natus quidem eligendi dolore ratione facere vero sunt nobis, ut reiciendis accusamus blanditiis aperiam illo atque est voluptatum? Quia id itaque quisquam earum molestias quis eius, numquam inventore sunt at saepe modi! Eveniet dicta optio dignissimos nesciunt, nemo, unde totam a saepe accusantium provident itaque dolor. Mollitia magni repudiandae dolorum non at minus dolore tempora cum qui deleniti. Cupiditate, hic. Natus vel blanditiis asperiores temporibus fuga officiis? Quasi velit placeat, nobis doloribus possimus, facere atque incidunt veritatis mollitia, cupiditate non maiores? Assumenda repudiandae obcaecati, facere nam, saepe quas quam voluptatem beatae commodi, nemo eos a recusandae illo quaerat suscipit praesentium expedita repellat sit aliquam ducimus facilis corporis? Voluptates error harum, nulla omnis a officia quo. Nam officia beatae omnis earum libero, maiores ipsa enim dolor distinctio dolorum!</p>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores maxime, nam ad cum inventore vero quas quaerat enim? Aliquid dolorum sed saepe soluta natus quidem eligendi dolore ratione facere vero sunt nobis, ut reiciendis accusamus blanditiis aperiam illo atque est voluptatum? Quia id itaque quisquam earum molestias quis eius, numquam inventore sunt at saepe modi! Eveniet dicta optio dignissimos nesciunt, nemo, unde totam a saepe accusantium provident itaque dolor. Mollitia magni repudiandae dolorum non at minus dolore tempora cum qui deleniti. Cupiditate, hic. Natus vel blanditiis asperiores temporibus fuga officiis? Quasi velit placeat, nobis doloribus possimus, facere atque incidunt veritatis mollitia, cupiditate non maiores? Assumenda repudiandae obcaecati, facere nam, saepe quas quam voluptatem beatae commodi, nemo eos a recusandae illo quaerat suscipit praesentium expedita repellat sit aliquam ducimus facilis corporis? Voluptates error harum, nulla omnis a officia quo. Nam officia beatae omnis earum libero, maiores ipsa enim dolor distinctio dolorum!</p>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores maxime, nam ad cum inventore vero quas quaerat enim? Aliquid dolorum sed saepe soluta natus quidem eligendi dolore ratione facere vero sunt nobis, ut reiciendis accusamus blanditiis aperiam illo atque est voluptatum? Quia id itaque quisquam earum molestias quis eius, numquam inventore sunt at saepe modi! Eveniet dicta optio dignissimos nesciunt, nemo, unde totam a saepe accusantium provident itaque dolor. Mollitia magni repudiandae dolorum non at minus dolore tempora cum qui deleniti. Cupiditate, hic. Natus vel blanditiis asperiores temporibus fuga officiis? Quasi velit placeat, nobis doloribus possimus, facere atque incidunt veritatis mollitia, cupiditate non maiores? Assumenda repudiandae obcaecati, facere nam, saepe quas quam voluptatem beatae commodi, nemo eos a recusandae illo quaerat suscipit praesentium expedita repellat sit aliquam ducimus facilis corporis? Voluptates error harum, nulla omnis a officia quo. Nam officia beatae omnis earum libero, maiores ipsa enim dolor distinctio dolorum!</p>
+    <div class="block-title">
+        <div class="title-bar"><h1>Dernières actus &nbsp;</h1></div>
+        <div class="bar-bar"><hr class="hr-title"></div>
+        <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
+    </div>
+    <div class="row">
+        {% for article in pagination.data %}
+            <div class="col-lg-3">
+                <div class="block-article mb-4 bg-light">
+                    <a href="{{ path('article_show', { 'id': article.id }) }}">
+                        <div class="type-article">{{article.type.name}}</div>
+                        <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
+                        <div class="title-article">{{article.title|slice(0, 50)|raw}}</div>
+                        <span class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</span>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {{ pagination.display() }}
 {% endblock %}

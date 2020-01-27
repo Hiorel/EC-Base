@@ -20,12 +20,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/{page<\d+>?1}", name="home")
      */
-    public function index()
+    public function index( $page, PaginationService $pagination)
     {
+        $pagination->setEntityClass(Article::class)
+        ->setLimit(8)
+        ->setPage($page);
+
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'pagination' => $pagination
         ]);
     }
 
@@ -38,17 +42,22 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/cat-article/{name}", name="cat_article")
+     * @Route("/cat-article/{name}/{page<\d+>?1}", name="cat_article")
      */
-    public function catArticle(Type $type, ArticleRepository $repo, TypeRepository $repoType)
+    public function catArticle(Type $type, ArticleRepository $repo, TypeRepository $repoType, $page, PaginationService $pagination)
     {
         $nameType = ($repoType->findOneById($type->getId()))->getName();
 
-        $articles = $repo->findByType($type->getId());
+        $pagination->setEntityClass(Article::class)
+        ->setLimit(8)
+        ->setTemplatePath('partials/paginationAlt3.html.twig')
+        ->setPage($page)
+        ->setNameType($nameType)
+        ->setIdType($type->getId());
 
         return $this->render('home/catArticle.html.twig', [
-            'articles' => $articles,
-            'name' => $nameType
+            'name' => $nameType,
+            'pagination' => $pagination
         ]);
     }
 
