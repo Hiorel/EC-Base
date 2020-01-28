@@ -3,6 +3,11 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mb-4">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="block-title">
         <div class="title-bar"><h1>Dernières actus &nbsp;</h1></div>
         <div class="bar-bar"><hr class="hr-title"></div>
@@ -12,10 +17,10 @@
         {% for article in pagination.data %}
             <div class="col-lg-3">
                 <div class="block-article mb-4 bg-light">
-                    <a href="{{ path('article_show', { 'id': article.id }) }}">
+                    <a href="{{ path('article_show', { 'id': article.id }) }}" {% if article.type.name == "Lodestone" %} target='_blank' {% endif %}>
                         <div class="type-article">{{article.type.name}}</div>
                         <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
-                        <div class="title-article">{{article.title|slice(0, 50)|raw}}</div>
+                        <div class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</div>
                         <span class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</span>
                     </a>
                 </div>

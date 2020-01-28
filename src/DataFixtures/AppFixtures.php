@@ -42,6 +42,19 @@ class AppFixtures extends Fixture
 
         $manager->persist($adminUser);
 
+         // Ajout des Types d'article
+
+         $listeType = ['Lodestone', 'Guide Classe', 'Guide PVE', 'Guide PVP', 'Guide Artisanat', 'Guide Gold Saucer', 'Histoire Univers', 'Histoire Personnages', 'Histoire Autres','Actu'];
+         $tabType = array();
+
+         for ($countArt=0; $countArt < 10; $countArt++) { 
+             $typeArt = new Type();
+             $typeArt->setName($listeType[$countArt]);
+             $manager->persist($typeArt);
+         }
+
+         $manager->flush();
+/*
         $users = [];
         for ($i=0; $i < 20; $i++) { 
             $user = new User();
@@ -142,5 +155,6 @@ class AppFixtures extends Fixture
         }   
 
          $manager->flush();
-    }
+    */
+}
 }
