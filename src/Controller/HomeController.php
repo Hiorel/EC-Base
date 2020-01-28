@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Type;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Videos;
 use App\Entity\Article;
@@ -137,7 +138,7 @@ class HomeController extends AbstractController
             if($form->isSubmitted() && $form->isValid()) {
 
                 $comment->setCreatedAt(new \DateTime('now'))
-                        ->setUser($article->getUser())
+                        ->setUser($this->getUser())
                         ->setArticle($article);  
 
                 $manager->persist($comment);

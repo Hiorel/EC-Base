@@ -393,6 +393,8 @@ class AdminController extends AbstractController
      */
     public function removeOneComment(EntityManagerInterface $manager, Comment $comment, $idUser) {
 
+        $articleId= $comment->getArticle();
+
         $manager->remove($comment);
         $manager->flush();
 
@@ -401,13 +403,13 @@ class AdminController extends AbstractController
             "Le commentaire a bien été supprimée"
         );
 
-        return $this->redirectToRoute('admin_edit_one_user', array('id' => $idUser));
+        return $this->redirectToRoute('admin_edit_one_user', array('id' => $articleId));
     }
 
      /**
      * Supprimer le commentaire en variable
      * 
-     * @Route("/admin/remove-comment/{id}/{idArticle}", name="admin_remove_comment_art")
+     * @Route("/admin/remove-comment-art/{id}/{idArticle}", name="admin_remove_comment_art")
      *
      * @return Response
      */
