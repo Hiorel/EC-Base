@@ -56,6 +56,14 @@ input{
     font-size:12px;
 }
 
+.comm-article {
+    position:absolute;
+    bottom:5px;
+    left:10px;
+    color: rgba(0,0,0,0.4);
+    font-size:11px;
+}
+
 .block-comment {
     padding-bottom:40px !important;
     text-align:justify;
@@ -118,7 +126,7 @@ input{
 .block-article{
     width:100%;
     min-height:250px;
-    padding-bottom: 40px !important;
+    padding-bottom: 40px;
     box-shadow: 0 0 5px rgba(0,0,0, 0.3);
     color:$color-primary-1;
     transition: all 500ms ease-in;
@@ -368,6 +376,33 @@ footer{
 
 /* Responsive 992 max */
 
+
+@media (min-width: 993px) and (max-width:1350px){
+    .date-article {
+        position:relative;
+        right:inherit;
+        bottom:inherit;
+        display:block;
+        margin-top:10px;
+        text-align:center !important;
+        font-size: 1rem;
+    }
+
+    .comm-article {
+        position:relative;
+        left:inherit;
+        bottom:inherit;
+        display:block;
+        margin-top:10px;
+        text-align:center !important;
+        font-size: 1rem;
+    }
+
+    .block-article{
+        padding-bottom: 5px;
+    }
+}
+
 @media (max-width: 992px){
     .title{
         min-height:100px;
@@ -398,8 +433,8 @@ footer{
         display:block;
         margin-top:10px;
     }
-     
-    .block-edit-comment {
+
+       .block-edit-comment {
         position:relative;
         left:inherit;
         bottom:inherit;
@@ -446,4 +481,28 @@ footer{
     header #search-header{display:none;}
 
     header #search-header:focus{background-image:none;}
+   
+    .date-article {
+        position:relative;
+        right:inherit;
+        bottom:inherit;
+        display:block;
+        margin-top:10px;
+        text-align:center !important;
+        font-size: 1rem;
+    }
+    
+    .comm-article {
+        position:relative;
+        left:inherit;
+        bottom:inherit;
+        display:block;
+        margin-top:10px;
+        text-align:center !important;
+        font-size: 1rem;
+    }
+    
+    .block-article{
+        padding-bottom: 5px;
+    }
 }

@@ -16,14 +16,7 @@
     <div class="row">
         {% for article in pagination.data %}
             <div class="col-lg-3">
-                <div class="block-article mb-4 bg-light">
-                    <a href="{{ path('article_show', { 'id': article.id }) }}" {% if article.type.name == "Lodestone" %} target='_blank' {% endif %}>
-                        <div class="type-article">{{article.type.name}}</div>
-                        <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
-                        <div class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</div>
-                        <span class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</span>
-                    </a>
-                </div>
+                {% include 'home/articleBlock.html.twig' %}
             </div>
         {% endfor %}
     </div>
