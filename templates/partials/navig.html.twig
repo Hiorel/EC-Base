@@ -2,8 +2,8 @@
     <ul class="navbar-nav row">
         <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
         <li class="nav-item col-md-12 col-lg-2 dropdown show" >
-            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Guides</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkGuide" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Guides</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkGuide">
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide Classe' }) }}"><i class="fas fa-user-graduate"></i> &nbsp; Classes</a>
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide PVE' }) }}"><i class="fas fa-meteor"></i> &nbsp; PVE</a>
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Guide PVP' }) }}"><i class="fas fa-fist-raised"></i> &nbsp; PVP</a>
@@ -13,24 +13,24 @@
         </li>
         <li class="nav-item col-md-12 col-lg-2"><a class="nav-link" href="{{ path('tools') }}">Outils</a></li>
         <li class="nav-item col-md-12 col-lg-2">
-            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Histoire</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkHistory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Histoire</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkHistory">
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Univers' }) }}"><i class="fas fa-globe"></i> &nbsp; Univers</a>
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Personnages' }) }}"><i class="fas fa-users"></i> &nbsp; Personnages</a>
                 <a class="dropdown-item" href="{{ path('cat_article', { 'name': 'Histoire Divers' }) }}"><i class="fas fa-book-open"></i> &nbsp; Autres</a>
             </div>
         </li>
         <li class="nav-item col-md-12 col-lg-2">
-            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Médias</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkMedia" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Médias</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkMedia">
                 <a class="dropdown-item" href="https://fr.finalfantasyxiv.com/lodestone/special/fankit/desktop_wallpaper/5_0/" target="_blank"><i class="fas fa-photo-video"></i> &nbsp; Officiels</a>
                 <a class="dropdown-item" href="{{ path('cat_videos') }}"><i class="fas fa-video"></i> &nbsp; Guides Vidéos</a>
                 <a class="dropdown-item" href="{{ path('cat_screens') }}"><i class="fas fa-images"></i> &nbsp; Capture d'écrans</a>
             </div>
         </li>
         <li class="nav-item col-md-12 col-lg-2 last-item">
-            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Compte</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLinkAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Compte</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkAccount">
                 {% if app.user %}
                     <a class="dropdown-item" href="{{ path('account_profile') }}"><img src="/uploads/avatar/{{ avatar_tmp }}" class="avatar avatar-micro"> &nbsp; Mon Profil</a>
                     <a class="dropdown-item" href="{{ path('account_password') }}"><i class="fas fa-key"></i> &nbsp; Mot de passe</a>
