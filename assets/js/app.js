@@ -19,7 +19,7 @@ require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
 
 
-$(document).ready(function() {
+/*$(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
 
@@ -48,4 +48,4 @@ window.onresize = function(){
     }else{
         changePlaceholder(0);
     }
-}
+}*/

@@ -41,8 +41,18 @@ class RegistrationType extends ApplicationType
                       ])
                   ],
             ])
-            ->add('hash', PasswordType::class, $this->getConfiguration("Mot de passe", "Choisissez un bon mot de passe..."))
-            ->add('passwordConfirm', PasswordType::class, $this->getConfiguration("Confirmation de mot passe", "Veuillez confirmer votre mot de passe"))
+            ->add('hash', PasswordType::class, [
+                  'label' => 'Mot de passe',
+                  'attr' => ['placeholder' => "Choisissez un bon mot de passe...",
+                'class' => 'form-control mb-3',
+                'autocomplete' => 'off',
+            ]])
+            ->add('passwordConfirm', PasswordType::class, [
+                'label' => 'Confirmation de mot de passe',
+                'attr' => ['placeholder' => "Veuillez confirmer votre mot de passe",
+              'class' => 'form-control mb-3',
+              'autocomplete' => 'off',
+          ]])
         ;
     }
 
