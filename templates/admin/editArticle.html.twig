@@ -33,6 +33,9 @@
                     <td class="cover-td"><img src="/uploads/articles/{{article.cover}}" alt="" class="cover-edit"></td>
                     <td>{{article.type.name}}</td>
                     <td class="d-flex justify-content-center">
+                        <a href="{{ path('article_show', { 'id': article.id }) }}" class="btn btn-info mr-1">
+                            <i class="fas fa-eye"></i>
+                        </a>
                         {% if article.type.name == "Lodestone" %}
                         <a href="{{ path('admin_edit_lodestone', {'id': article.id}) }}" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
