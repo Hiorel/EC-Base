@@ -2,6 +2,8 @@
 
 {% block title %}{{article.title}}{% endblock %}
 
+{% block metaDescription %}<meta name="description" content="{{article.title}}"/>{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('successComment') %}
         <div class="alert alert-success mb-4">

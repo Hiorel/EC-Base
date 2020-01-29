@@ -2,6 +2,8 @@
 
 {% block title %}Connexion au site{% endblock %}
 
+{% block metaDescription %}<meta name="description" content="Connectez-vous au site Eorzéa Compendium"/>{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mb-4">

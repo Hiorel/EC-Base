@@ -2,6 +2,8 @@
 
 {% block title %}Captures d'écrans{% endblock %}
 
+{% block metaDescription %}<meta name="description" content="Captures d'écrans disponibles sur Eorzéa Compendium"/>{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mb-4">

@@ -2,6 +2,8 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block metaDescription %}<meta name="description" content="Site d'actualité et de guide sur Final Fantasy XIV. Le plein d'infos sur Eorzéa !"/>{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mb-4">

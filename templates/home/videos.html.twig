@@ -2,6 +2,8 @@
 
 {% block title %}Guides vidéos{% endblock %}
 
+{% block metaDescription %}<meta name="description" content="Vidéos disponibles sur Eorzéa Compendium"/>{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mb-4">
