@@ -21,14 +21,15 @@ require('@fortawesome/fontawesome-free/js/all.js');
 
 /*$(document).ready(function() {
     $('[data-toggle="popover"]').popover();
-});
+});*/
 
 $(document).on('change', '.custom-file-input', function () {
     let fileName = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+    fileName = fileName.substr(0,15) + "...";
     $(this).parent('.custom-file').find('.custom-file-label').text(fileName);
 });
 
-function changePlaceholder(change = 1){
+/*function changePlaceholder(change = 1){
     if(change==1){
         document.getElementById('search-header').placeholder = 'RECHERCHER...';
     }else{
