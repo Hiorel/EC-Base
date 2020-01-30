@@ -14,6 +14,7 @@ use App\Form\VideosType;
 use App\Form\AccountType;
 use App\Form\ArticleType;
 use App\Form\CommentType;
+use Cocur\Slugify\Slugify;
 use App\Entity\Screenshots;
 use App\Form\LodestoneType;
 use App\Service\FileService;
@@ -87,6 +88,9 @@ class AdminController extends AbstractController
             $article->setCreatedAt(new \DateTime('now'));
             $article->setUser($this->getUser());
 
+            $slugify = new Slugify();
+            $article->setSlug($slugify->slugify($article->getTitle()));
+
             $manager->persist($article);
             $manager->flush();
 
@@ -144,6 +148,9 @@ class AdminController extends AbstractController
             $article->setType($typeArt);
             $article->setUser($this->getUser());
 
+            $slugify = new Slugify();
+            $article->setSlug($slugify->slugify($article->getTitle()));
+
             $manager->persist($article);
             $manager->flush();
 
@@ -189,6 +196,10 @@ class AdminController extends AbstractController
                 }
             } else {$article->setCover($coverArt);
             }
+
+            $slugify = new Slugify();
+            $article->setSlug($slugify->slugify($article->getTitle()));
+
                 $manager->persist($article);
                 $manager->flush();
 
@@ -261,6 +272,9 @@ class AdminController extends AbstractController
                 $content->setArticle($article);
                 $manager->persist($content);
             }
+
+                $slugify = new Slugify();
+                $article->setSlug($slugify->slugify($article->getTitle()));
 
                 $manager->persist($article);
                 $manager->flush();
