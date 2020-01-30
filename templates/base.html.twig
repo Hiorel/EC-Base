@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html xmlns:og="http://ogp.me/ns#" lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>Eorzea Compendium - {% block title %}Bienvenue !{% endblock %}</title>
@@ -7,6 +7,13 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
         {{ encore_entry_link_tags('app') }}
+        <meta property="og:title" content="Eorzea Compendium" />
+        <meta property="fb:app_id"  content="862791394181878" /> 
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="Site d'actualité et de guide sur Final Fantasy XIV. Le plein d'infos sur Eorzéa !" />
+        <meta property="og:image" content="https://eorzea-compendium.fr{{asset('build/images/meta_image.png')}}" />
+        <meta property="og:locale" content="fr-FR" />
+        <meta property="og:url" content="https://eorzea-compendium.fr/" />
         {% block metaDescription %}{% endblock %}
         <style>
             body{
