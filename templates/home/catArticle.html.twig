@@ -10,12 +10,21 @@
         <div class="bar-bar"><hr class="hr-title"></div>
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
-    <div class="row">
-        {% for article in pagination.getData4() %}
-            <div class="col-lg-3">
-                {% include 'home/articleBlock.html.twig' %}
+    {% if pagination.getData4() == NULL %}
+        <div class="row mt-5">
+            <div class="col-2">&nbsp;</div>
+            <div class="col-8 bg-light">
+                <div class="h3 text-center m-3">Cette section ne comporte pas encore d'articles</div>
             </div>
-        {% endfor %}
-    </div>
+        </div>
+    {% else %}
+        <div class="row">
+            {% for article in pagination.getData4() %}
+                <div class="col-lg-3">
+                    {% include 'home/articleBlock.html.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     {{ pagination.display4() }}
 {% endblock %}
