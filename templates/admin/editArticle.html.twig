@@ -33,15 +33,15 @@
                     <td class="cover-td"><img src="/uploads/articles/{{article.cover}}" alt="" class="cover-edit"></td>
                     <td>{{article.type.name}}</td>
                     <td class="d-flex justify-content-center">
-                        <a href="{{ path('article_show', { 'id': article.id }) }}" class="btn btn-info mr-1">
+                        <a href="{{ path('article_show', { 'slug': article.slug }) }}" class="btn btn-info mr-1">
                             <i class="fas fa-eye"></i>
                         </a>
                         {% if article.type.name == "Lodestone" %}
-                        <a href="{{ path('admin_edit_lodestone', {'id': article.id}) }}" class="btn btn-primary mr-1">
+                        <a href="{{ path('admin_edit_lodestone', {'slug': article.slug}) }}" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
                         </a>
                         {% else %}
-                        <a href="{{ path('admin_edit_one_article', {'id': article.id}) }}" class="btn btn-primary mr-1">
+                        <a href="{{ path('admin_edit_one_article', {'slug': article.slug}) }}" class="btn btn-primary mr-1">
                             <i class="fas fa-pen"></i>
                         </a>
                         {% endif %}

@@ -80,6 +80,13 @@ class PaginationService {
      *
      * @var string
      */
+    private $slugArticle;
+
+            /**
+     * Le chemin vers le template qui contient la pagination
+     *
+     * @var string
+     */
     private $idType;
 
     
@@ -171,7 +178,8 @@ class PaginationService {
             'page' => $this->currentPage,
             'pages' => $this->getPages3(),
             'route' => $this->route,
-            'idArticle' => $this->getIdArticle()
+            'idArticle' => $this->getIdArticle(),
+            'slugArticle' => $this->getSlugArticle()
         ]);
     }
 
@@ -491,6 +499,27 @@ class PaginationService {
      */
     public function setIdArticle(int $idArticle): self {
         $this->idArticle = $idArticle;
+
+        return $this;
+    }
+
+    /**
+     * Permet de récupérer l'id de l'utilisateur actuellement choisi
+     *
+     * @return int
+     */
+    public function getSlugArticle(): string {
+        return $this->slugArticle;
+    }
+
+    /**
+     * Permet de spécifier l'utilisateur actuellement choisi'
+     *
+     * @param int $idUser
+     * @return self
+     */
+    public function setSlugArticle(string $slugArticle): self {
+        $this->slugArticle = $slugArticle;
 
         return $this;
     }

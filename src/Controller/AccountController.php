@@ -203,7 +203,7 @@ class AccountController extends AbstractController
     /**
      * Permet l'édition d'un commentaire
      *
-     * @Route("/account/edit-comment/{idArt}/{id}", name="account_edit_one_comment")
+     * @Route("/account/edit-comment/{slug}/{id}", name="account_edit_one_comment")
      * 
      * @Security("is_granted('ROLE_ADMIN') or user === comment.getUser()", message="Ce commentaire ne vous appartient pas, vous ne pouvez pas le modifier")
      * 

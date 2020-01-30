@@ -1,6 +1,6 @@
 <div class="block-article mb-4 bg-light">
     {% set countComment = article.comments|length %}
-    <a href="{{ path('article_show', { 'id': article.id }) }}" {% if article.type.name == "Lodestone" %} target='_blank' {% endif %}>
+    <a href="{{ path('article_show', { 'slug': article.slug }) }}" {% if article.type.name == "Lodestone" %} target='_blank' {% endif %}>
         <div class="type-article">{{article.type.name}}</div>
         <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
         <div class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</div>

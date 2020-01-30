@@ -18,7 +18,7 @@
     {% if app.user %}
      {% for role in app.user.roles %}
         {% if role == 'ROLE_ADMIN' %}
-            <a href="{{ path('admin_edit_one_article', {'id': article.id}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
+            <a href="{{ path('admin_edit_one_article', {'slug': article.slug}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
         {% endif %}
     {% endfor %}
     {% endif %}
@@ -87,12 +87,12 @@
                                 {% set tmp = 0 %}
                                 {% for role in app.user.roles %}
                                     {% if role == 'ROLE_ADMIN' %}
-                                        <a href="{{ path('account_edit_one_comment', {'id': comment.id, 'idArt': article.id}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
-                                        <a href="{{ path('admin_remove_comment_art', {'id': comment.id, 'idArticle': article.id}) }}" class="edit-comment badge"><i class="fas fa-trash"></i> &nbsp; Supprimer</a>
+                                        <a href="{{ path('account_edit_one_comment', {'id': comment.id, 'slug': article.slug}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
+                                        <a href="{{ path('admin_remove_comment_art', {'id': comment.id, 'slugArticle': article.slug}) }}" class="edit-comment badge"><i class="fas fa-trash"></i> &nbsp; Supprimer</a>
                                         {% set tmp = 1 %}
                                     {% endif %}
                                     {% if app.user == comment.user and tmp == 0 %}
-                                        <a href="{{ path('account_edit_one_comment', {'id': comment.id, 'idArt': article.id}) }}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
+                                        <a href="{{ path('account_edit_one_comment', {'id': comment.id, 'slug': article.slug}) }}) }}" class="edit-comment badge"><i class="fas fa-edit"></i> &nbsp; éditer</a>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}

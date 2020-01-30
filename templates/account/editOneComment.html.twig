@@ -16,6 +16,6 @@
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button type="submit" class="btn btn-primary mt-3 mb-5 mr-3"><i class="fas fa-check"></i> Enregistrer les modifications</button>
-    <a href="{{ path('article_show', {'id': comment.article.id}) }}) }}" class="btn btn-secondary mt-3 mb-5"><i class="fas fa-newspaper"></i> &nbsp; Retour à l'article</a>
+    <a href="{{ path('article_show', {'slug': comment.article.slug}) }}" class="btn btn-secondary mt-3 mb-5"><i class="fas fa-newspaper"></i> &nbsp; Retour à l'article</a>
     {{ form_end(form) }}
 {% endblock %}

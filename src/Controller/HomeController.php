@@ -115,7 +115,7 @@ class HomeController extends AbstractController
     /**
     * Permet d'afficher un article
     *
-    * @Route("/article/{id}/{page<\d+>?1}", name="article_show")
+    * @Route("/article/{slug}/{page<\d+>?1}", name="article_show")
     * 
     * @return Response
     */
@@ -127,7 +127,8 @@ class HomeController extends AbstractController
             $pagination->setEntityClass(Comment::class)
             ->setPage($page)
             ->setTemplatePath('partials/paginationAlt2.html.twig')
-            ->setIdArticle($article->getId());
+            ->setIdArticle($article->getId())
+            ->setSlugArticle($article->getSlug());
 
             $comment = New Comment();
 
@@ -150,7 +151,7 @@ class HomeController extends AbstractController
                 );
 
                 return $this->redirectToRoute('article_show', [
-                    'id' => $article->getId()
+                    'slug' => $article->getSlug()
                 ]);
             }
 

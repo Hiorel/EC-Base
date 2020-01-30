@@ -100,7 +100,7 @@ class AdminController extends AbstractController
             );
 
             return $this->redirectToRoute('article_show', [
-                'id' => $article->getId(),
+                'slug' => $article->getSlug(),
             ]);
         }
 
@@ -170,7 +170,7 @@ class AdminController extends AbstractController
     /**
      * Permet l'édition d'un article lodestone 
      * 
-     * @Route("/admin/edit-article-lodestone/{id}", name="admin_edit_lodestone")
+     * @Route("/admin/edit-article-lodestone/{slug}", name="admin_edit_lodestone")
      * 
      * @return Response
      */
@@ -237,7 +237,7 @@ class AdminController extends AbstractController
     /**
      * Permet l'édition d'un article en particulier
      *
-     * @Route("/admin/edit-article/{id}/edit", name="admin_edit_one_article")
+     * @Route("/admin/edit-article/{slug}/edit", name="admin_edit_one_article")
      * 
      * @return Response
      */
@@ -417,17 +417,17 @@ class AdminController extends AbstractController
             "Le commentaire a bien été supprimée"
         );
 
-        return $this->redirectToRoute('admin_edit_one_user', array('id' => $articleId));
+        return $this->redirectToRoute('admin_edit_one_user', array('id' => $idUser));
     }
 
      /**
      * Supprimer le commentaire en variable
      * 
-     * @Route("/admin/remove-comment-art/{id}/{idArticle}", name="admin_remove_comment_art")
+     * @Route("/admin/remove-comment-art/{id}/{slugArticle}", name="admin_remove_comment_art")
      *
      * @return Response
      */
-    public function removeOneCommentArt(EntityManagerInterface $manager, Comment $comment, $idArticle) {
+    public function removeOneCommentArt(EntityManagerInterface $manager, Comment $comment, $slugArticle) {
 
         $manager->remove($comment);
         $manager->flush();
@@ -437,7 +437,7 @@ class AdminController extends AbstractController
             "Le commentaire a bien été supprimée"
         );
 
-        return $this->redirectToRoute('article_show', array('id' => $idArticle));
+        return $this->redirectToRoute('article_show', array('slug' => $slugArticle));
     }
 
      /**
