@@ -16,6 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  fields={"email"},
  *  message="un autre utilisateur s'est déjà inscrit avec cette adresse email, merci de la modifier"
  * )
+ * @UniqueEntity(
+ * fields={"name"},
+ * message="un autre utilisateur s'est déjà inscrit avec ce ce pseudo, merci de la modifier"
+ * )
  */
 class User implements UserInterface
 {
@@ -46,6 +50,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min=8, minMessage="Votre mot de passe doit faire au moins 8 caractères !")
+     * @Assert\Regex(pattern="#^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])#", message="Votre mot de passe doit contenir au moins une minuscule, une majuscule et un chiffre !")
      */
     private $hash;
 
