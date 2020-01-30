@@ -91,7 +91,7 @@ class HomeController extends AbstractController
     /**
      * Retourne les différentes page de guide selon leur catégorie
      * 
-     * @Route("/cat-article/{name}/{page<\d+>?1}", name="cat_article")
+     * @Route("/{name}/{page<\d+>?1}", name="cat_article")
      * 
      * @return Response
      */
