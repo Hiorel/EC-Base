@@ -78,7 +78,30 @@
             {% set countComment = comment.user.comments|length %}
                 <tr>
                     <td class="text-center tab-avatar">
-                        <img src="/uploads/avatar/{{comment.user.avatar}}" alt="Avatar de {{comment.user.name}}" class="avatar"><br>
+                        {% if app.user %}
+                            {% set tmp = 0 %}
+                            {% for role in app.user.roles %}
+                                {% if role == 'ROLE_ADMIN' %}
+                                    <a href="{{ path('admin_edit_one_user', {'id': comment.user.id}) }}">
+                                        <img src="/uploads/avatar/{{comment.user.avatar}}" alt="Avatar de {{comment.user.name}}" class="avatar">
+                                    </a>
+                                    {% set tmp = 1 %}
+                                {% else %}
+                                    {% if tmp == 0 %}                                    
+                                        {% if app.user == comment.user %}
+                                            <a href="{{ path('account_profile') }}">
+                                                <img src="/uploads/avatar/{{comment.user.avatar}}" alt="Avatar de {{comment.user.name}}" class="avatar">
+                                            </a>
+                                        {% else %}
+                                            <img src="/uploads/avatar/{{comment.user.avatar}}" alt="Avatar de {{comment.user.name}}" class="avatar">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <img src="/uploads/avatar/{{comment.user.avatar}}" alt="Avatar de {{comment.user.name}}" class="avatar">
+                        {% endif %}
+                        <br>
                         <span class="font-weight-bold">{{comment.user.name}}</span><br>
                         <span class="badge badge-dark">{{countComment}} {% if countComment > 1 %}messages{% else %}message{% endif %}</span>
                     </td>
