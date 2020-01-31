@@ -430,6 +430,10 @@ footer{
 
     .table-responsive{display: block;}
 
+    .block-comment {
+        text-align: left;
+    }
+
     .date-comment {
         position:relative;
         right:inherit;
@@ -467,6 +471,11 @@ footer{
             -webkit-text-stroke-color: $color-secondary-2;
             padding-top:20px;
         }
+    }
+
+    .font-para{
+        font-size:1em;
+        width:90% !important;
     }
 
     header #search-header{
