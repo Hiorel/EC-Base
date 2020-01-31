@@ -31,17 +31,20 @@ class SitemapController extends AbstractController
 
         // On ajoute les URLs dynamiques des articles dans le tableau
         foreach ($this->getDoctrine()->getRepository(Article::class)->findAll() as $article) {
-            $images = [
-                'loc' => '/uploads/articles/'.$article->getCover()
-            ];
+            if ($article->getType()->getName() != "Lodestone")
+            {
+                $images = [
+                    'loc' => '/uploads/articles/'.$article->getCover()
+                ];
 
-            $urls[] = [
-                'loc' => $this->generateUrl('article_show', [
-                    'slug' => $article->getSlug(),
-                ]),
-                'lastmod' => $article->getCreatedAt()->format('Y-m-d'),
-                'image' => '/uploads/articles/'.$article->getCover()
-            ];
+                $urls[] = [
+                    'loc' => $this->generateUrl('article_show', [
+                        'slug' => $article->getSlug(),
+                    ]),
+                    'lastmod' => $article->getCreatedAt()->format('Y-m-d'),
+                    'image' => '/uploads/articles/'.$article->getCover()
+                ];
+            }
         }
         // Fabrication de la réponse XML
         $response = new Response(
