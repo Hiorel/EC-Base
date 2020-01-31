@@ -42,7 +42,7 @@ class SitemapController extends AbstractController
                         'slug' => $article->getSlug(),
                     ]),
                     'lastmod' => $article->getCreatedAt()->format('Y-m-d'),
-                    'image' => '/uploads/articles/'.$article->getCover()
+                    'image' => $images
                 ];
             }
         }
