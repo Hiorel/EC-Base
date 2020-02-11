@@ -4,9 +4,9 @@
         <div class="type-article">{{article.type.name}}</div>
         <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
         <div class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</div>
-        <span class="comm-article font-italic font-weight-bold text-left">
+        {# <span class="comm-article font-italic font-weight-bold text-left">
             <i class="fas fa-comment"></i> {{countComment}} {% if countComment > 1 %}commentaires{% else %}commentaire{% endif %}
-        </span>
+        </span> #}
         <span class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</span>
     </a>
 </div>
