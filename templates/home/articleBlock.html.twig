@@ -1,12 +1,20 @@
-<div class="block-article mb-4 bg-light">
+<div {% if article.type.name == "Lodestone" %} 
+    class="block-article lodestone mb-4 bg-light" 
+{% else %}
+    class="block-article mb-4 bg-light" 
+{% endif %}>
     {% set countComment = article.comments|length %}
     <a href="{{ path('article_show', { 'slug': article.slug }) }}" {% if article.type.name == "Lodestone" %} target='_blank' {% endif %}>
-        <div class="type-article">{{article.type.name}}</div>
+        {% if article.type.name != "Lodestone" %}
+            <div class="type-article">{{article.type.name}}</div>
+        {% endif %}
         <img src="/uploads/articles/{{article.cover}}" alt="" class="cover-block">
-        <div class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</div>
-        {# <span class="comm-article font-italic font-weight-bold text-left">
-            <i class="fas fa-comment"></i> {{countComment}} {% if countComment > 1 %}commentaires{% else %}commentaire{% endif %}
-        </span> #}
-        <span class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</span>
+        <h2 class="title-article text-center font-weight-bold">{{article.title|slice(0, 50)|raw}}</h2>
+        {% if article.type.name != "Lodestone" %}
+            <span class="comm-article font-italic font-weight-bold text-left">
+                <i class="fas fa-comment"></i> {{countComment}} {% if countComment > 1 %}commentaires{% else %}commentaire{% endif %}
+            </span>
+            <div class="date-article font-italic font-weight-bold text-left">Le {{article.createdAt|date('d/m/Y')}} à {{article.createdAt|date('H:i')}}</div>
+        {% endif %}
     </a>
 </div>

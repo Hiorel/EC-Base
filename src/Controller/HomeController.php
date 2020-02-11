@@ -25,18 +25,27 @@ class HomeController extends AbstractController
     /**
      * Renvoie la page d'accueil du site
      * 
-     * @Route("/{page<\d+>?1}", name="home")
+     * @Route("/{page<\d+>?1}{page2<\d+>?1}", name="home")
      * 
      * @return Response
      */
-    public function index( $page, PaginationService $pagination)
+    public function index( $page,$page2, PaginationService $pagination, PaginationService $pagination2)
     {
         $pagination->setEntityClass(Article::class)
         ->setLimit(8)
         ->setPage($page);
 
+        $pagination2->setEntityClass(Article::class)
+        ->setLimit(4)
+        ->setTemplatePath('partials/paginationAlt3.html.twig')
+        ->setPage($page2)
+        ->setNameType("Lodestone")
+        ->setIdType(1);
+
         return $this->render('home/index.html.twig', [
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'name' => "Lodestone",
+            'pagination2' => $pagination2
         ]);
     }
 

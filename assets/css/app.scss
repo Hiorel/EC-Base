@@ -49,9 +49,8 @@ input{
 }
 
 .date-article {
-    position:absolute;
-    bottom:5px;
-    right:15px;
+text-align:right !important;
+padding-right:5px;
     color: rgba(0,0,0,0.2);
     font-size:12px;
 }
@@ -120,19 +119,28 @@ input{
 
 .cover-block{
     width:100%;
-    height:150px;
+    
 }
 
 .block-article{
     width:100%;
-    min-height:250px;
-    padding-bottom: 40px;
+
     box-shadow: 0 0 5px rgba(0,0,0, 0.3);
     color:$color-primary-1;
     transition: all 500ms ease-in;
     transform: scale(1);
 
     a{text-decoration: none;}
+
+    h2{
+        font-size:1rem;
+    }
+}
+
+.lodestone{
+    min-height:100px;
+padding-bottom:0;
+
 }
 
 .block-article:hover{

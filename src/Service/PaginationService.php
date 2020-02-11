@@ -138,6 +138,14 @@ class PaginationService {
         ]);
     }
 
+    public function display7() {
+        $this->twig->display($this->templatePath, [
+            'page' => $this->currentPage,
+            'pages' => $this->getPages6(),
+            'route' => $this->route
+        ]);
+    }
+
         /**
      * Permet d'afficher le rendu de la navigation au sein d'un template twig !
      * 
@@ -208,7 +216,7 @@ class PaginationService {
     public function display5() {
         $this->twig->display($this->templatePath, [
             'page' => $this->currentPage,
-            'pages' => $this->getPages(),
+            'pages' => $this->getPages6(),
             'route' => $this->route
         ]);
     }
@@ -225,6 +233,33 @@ class PaginationService {
      * @return int
      */
     public function getPages(): int {
+        if(empty($this->entityClass)) {
+            // Si il n'y a pas d'entité configurée, on ne peut pas charger le repository, la fonction
+            // ne peut donc pas continuer !
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+
+        // 1) Connaitre le total des enregistrements de la table
+        $total = count($this->manager
+                        ->getRepository($this->entityClass)
+                        ->findByTypeArticleCount());
+
+        // 2) Faire la division, l'arrondi et le renvoyer
+        return ceil($total / $this->limit);
+    }
+
+        /**
+     * Permet de récupérer le nombre de pages qui existent sur une entité particulière
+     * 
+     * Elle se sert de Doctrine pour récupérer le repository qui correspond à l'entité que l'on souhaite
+     * paginer (voir la propriété $entityClass) puis elle trouve le nombre total d'enregistrements grâce
+     * à la fonction findAll() du repository
+     * 
+     * @throws Exception si la propriété $entityClass n'est pas configurée
+     * 
+     * @return int
+     */
+    public function getPages6(): int {
         if(empty($this->entityClass)) {
             // Si il n'y a pas d'entité configurée, on ne peut pas charger le repository, la fonction
             // ne peut donc pas continuer !
@@ -309,10 +344,6 @@ class PaginationService {
         return ceil($total / $this->limit);
     }
 
-
-
-
-
     /**
      * Permet de récupérer les données paginées pour une entité spécifique
      * 
@@ -335,7 +366,22 @@ class PaginationService {
         // dans la limite d'éléments imposée (voir propriété $limit)
         return $this->manager
                         ->getRepository($this->entityClass)
-                        ->findBy([], array('createdAt' => 'desc'), $this->limit, $offset);
+                        ->findByTypeArticle($this->limit, $offset);
+    }
+
+
+    public function getData7() {
+        if(empty($this->entityClass)) {
+            throw new \Exception("Vous n'avez pas spécifié l'entité sur laquelle nous devons paginer ! Utilisez la méthode setEntityClass() de votre objet PaginationService !");
+        }
+        // 1) Calculer l'offset
+        $offset = $this->currentPage * $this->limit - $this->limit;
+
+        // 2) Demander au repository de trouver les éléments à partir d'un offset et 
+        // dans la limite d'éléments imposée (voir propriété $limit)
+        return $this->manager
+                        ->getRepository($this->entityClass)
+                        ->findBy([], array('id' => 'desc'),$this->limit, $offset);
     }
 
 

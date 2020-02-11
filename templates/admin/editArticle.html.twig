@@ -25,7 +25,7 @@
             </tr>
         </thead>
          <tbody>
-            {% for article in pagination.data %}
+            {% for article in pagination.getData7() %}
                 <tr class="text-center">
                     <td>{{article.id}}</td>
                     <td>{{article.title}}</td>
@@ -53,5 +53,5 @@
             {% endfor %}
         </tbody>
     </table>
-    {{ pagination.display() }}
+    {{ pagination.display7() }}
 {% endblock %}
