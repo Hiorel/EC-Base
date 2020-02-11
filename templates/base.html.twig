@@ -9,10 +9,12 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
         {{ encore_entry_link_tags('app') }}
         <meta property="og:title" content="Eorzea Compendium" />
-        <meta property="fb:app_id"  content="862791394181878" /> 
+        <meta property="fb:app_id"  content="862791394181878" />
+        {% block og %}
+            <meta property="og:description" content="Site d'actualité et de guide sur Final Fantasy XIV. Le plein d'infos sur Eorzéa !" />
+            <meta property="og:image" content="https://eorzea-compendium.fr{{asset('build/images/meta_image.png')}}" />
+        {% endblock %} 
         <meta property="og:type" content="website" />
-        <meta property="og:description" content="Site d'actualité et de guide sur Final Fantasy XIV. Le plein d'infos sur Eorzéa !" />
-        <meta property="og:image" content="https://eorzea-compendium.fr{{asset('build/images/meta_image.png')}}" />
         <meta property="og:locale" content="fr-FR" />
         <meta property="og:url" content="https://eorzea-compendium.fr/" />
         {% block metaDescription %}{% endblock %}

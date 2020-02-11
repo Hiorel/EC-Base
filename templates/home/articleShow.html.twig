@@ -4,6 +4,11 @@
 
 {% block metaDescription %}<meta name="description" content="{{article.title}}"/>{% endblock %}
 
+{% block og %}
+    <meta property="og:description" content="{{article.title}}" />
+    <meta property="og:image" content="https://eorzea-compendium.fr/uploads/articles/{{article.cover}}" />
+{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('successComment') %}
         <div class="alert alert-success mb-4">
