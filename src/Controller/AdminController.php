@@ -555,7 +555,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('cat_videos');
         }
 
-        return $this->render('admin/EditVideo.html.twig', [
+        return $this->render('admin/editVideo.html.twig', [
             'form' => $form->createView(),
             'video' => $video
         ]);
