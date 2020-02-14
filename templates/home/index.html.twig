@@ -16,13 +16,12 @@
         <img src="{{asset('build/images/logo_title.png')}}" alt="Icone de Chocobo" class="logo-bar">
     </div>
     <div class="row">
-        {% for article in pagination2.getData4() %}
+        {% for article in articles %}
             <div class="col-lg-3">
                 {% include 'home/articleBlock.html.twig' %}
             </div>
         {% endfor %}
     </div>
-    {{ pagination2.display4() }}
     <div class="block-title">
         <div class="title-bar"><h1>Dernières actus &nbsp;</h1></div>
         <div class="bar-bar"><hr class="hr-title"></div>
