@@ -39,7 +39,33 @@ input{
 	}
 }
 
+.color-pr1{
+    color: $color-primary-1;
+}
+
+.color-pr2{
+    color: $color-primary-2;
+}
+
+.color-se1{
+    color: $color-secondary-1;
+}
+
+.color-se1{
+    color: $color-secondary-2;
+}
+
+
 /* Spécifique */
+
+.clean-link{
+color: $color-primary-1;
+}
+
+.clean-link:hover{
+    text-decoration: none;
+    color: $color-primary-2;
+}
 
 .date-comment {
     position:absolute;

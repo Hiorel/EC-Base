@@ -33,7 +33,9 @@
     <body>
         {% include "partials/header.html.twig" %}
         <div class="title offset-lg-1 col-lg-10">
+            <a href="{{ path('home') }}" class="clean-link">
             <h1><span>E</span>ORZEA COMPENDIUM</h1>
+            </a>
         </div>
         <div class="container offset-lg-1 col-lg-10">
              {% if app.user %}
