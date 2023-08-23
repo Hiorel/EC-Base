@@ -1,7 +1,7 @@
 # EC-Base
 Site de Base - Eorzea Compendium
 
-Projet de Fansite sur le jeu vidéo Final Fantasy XIV avec plusieurs fonctionnalités :
+Projet de Fansite sous Symfony 4 sur le jeu vidéo Final Fantasy XIV avec plusieurs fonctionnalités :
 - Création et gestion de compte (Pseudo / Mail / Avatar)
 - Ajout d'un système de commentaire sur les articles
 - Différentes rôles d'utilisateurs (Utilisateurs / Rédacteurs / Admin)
